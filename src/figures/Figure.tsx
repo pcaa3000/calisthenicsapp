@@ -15,6 +15,7 @@ export function Figure({ anim, size = 140 }: FigureProps) {
       role="img"
       aria-hidden="true"
     >
+      <ellipse className="fig-shadow" cx="70" cy="118" rx="30" ry="5" />
       <line className="fig-ground" x1="8" y1="118" x2="132" y2="118" />
       <line className="fig-wall" x1="112" y1="10" x2="112" y2="118" />
       <g className="fig-chair">
