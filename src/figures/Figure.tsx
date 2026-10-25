@@ -17,6 +17,13 @@ export function Figure({ anim, size = 140 }: FigureProps) {
     >
       <line className="fig-ground" x1="8" y1="118" x2="132" y2="118" />
       <line className="fig-wall" x1="112" y1="10" x2="112" y2="118" />
+      <g className="fig-chair">
+        <line x1="94" y1="84" x2="128" y2="84" />
+        <line x1="98" y1="84" x2="98" y2="118" />
+        <line x1="124" y1="84" x2="124" y2="118" />
+        <line x1="124" y1="56" x2="124" y2="84" />
+      </g>
+      <path className="fig-diamond" d="M100 102 l7 7 -7 7 -7 -7 z" />
       <g className="fig-body">
         <g className="lower">
           <line className="torso-low" x1="70" y1="42" x2="70" y2="60" />

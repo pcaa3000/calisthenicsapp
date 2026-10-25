@@ -6,8 +6,7 @@ describe('App', () => {
   it('renders the profile form when there is no saved profile', () => {
     const html = renderToString(<App />);
     expect(html).toContain('Calistenia Militar');
-    expect(html).toContain('Tus datos');
-    expect(html).toContain('Edad');
-    expect(html).toContain('Nivel de dificultad');
+    expect(html).toContain('¿Cuál es tu edad?');
+    expect(html).toContain('18 - 29');
   });
 });

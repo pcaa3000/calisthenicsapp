@@ -105,6 +105,29 @@ body {
 .steps span { flex: 1; height: 4px; background: var(--line); border-radius: 2px; }
 .steps span.done { background: var(--olive); }
 
+.step-q { color: var(--khaki); font-size: 1.35rem; margin: 0 0 18px; }
+.opt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.opt-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+.opt-card {
+  background: var(--bg2);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 18px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  text-align: left;
+  transition: all 0.15s;
+}
+.opt-card:hover { border-color: var(--olive); transform: translateY(-2px); }
+.opt-card.on { border-color: var(--olive); background: var(--card2); }
+.opt-card strong { font-size: 1.05rem; color: var(--khaki); }
+.opt-card span { font-size: 0.85rem; color: var(--muted); }
+.back-btn { margin-top: 20px; }
+
 /* ===== Plan semanal ===== */
 .plan-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
 .plan-head h2 { margin: 0; color: var(--olive-hi); }
@@ -197,6 +220,13 @@ body {
 .fig .head { fill: var(--bg); stroke: currentColor; stroke-width: 4; }
 .fig-ground { stroke-width: 2; opacity: 0.35; }
 .fig-wall { display: none; stroke-width: 5; opacity: 0.3; }
+.fig-chair { display: none; transform-box: view-box; }
+.fig-chair line { stroke-width: 3; opacity: 0.45; }
+.anim-pushup-incline .fig-chair,
+.anim-pushup-decline .fig-chair,
+.anim-lunge-bulgarian .fig-chair,
+.anim-dip .fig-chair,
+.anim-pistol .fig-chair { display: block; }
 
 .fig-body, .upper, .lower, .arm, .fore, .leg, .shin { transform-box: view-box; }
 .fig-body { transform-origin: 70px 60px; }
@@ -506,6 +536,165 @@ body {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-4px); }
 }
+
+/* ===== variantes de flexión ===== */
+/* inclinada: cuerpo diagonal apoyado en la silla */
+.anim-pushup-incline .fig-body { animation: kf-pi-body 1.6s ease-in-out infinite; }
+@keyframes kf-pi-body {
+  0%, 100% { transform: translate(-20px, 12px) rotate(50deg); }
+  50% { transform: translate(-20px, 20px) rotate(50deg); }
+}
+
+/* abierta: brazos separados */
+.anim-pushup-wide .fig-body { animation: kf-pushup 1.7s ease-in-out infinite; }
+.anim-pushup-wide .arm-a { transform: rotate(-135deg); }
+.anim-pushup-wide .arm-b { transform: rotate(-45deg); }
+
+/* declinada: pies en la silla, cabeza abajo */
+.anim-pushup-decline .fig-chair { transform: translateX(-66px); }
+.anim-pushup-decline .fig-body { animation: kf-pd-body 1.6s ease-in-out infinite; }
+.anim-pushup-decline .arm { transform: rotate(-40deg); }
+@keyframes kf-pd-body {
+  0%, 100% { transform: translate(17px, 40px) rotate(115deg); }
+  50% { transform: translate(17px, 48px) rotate(115deg); }
+}
+
+/* diamante: manos juntas (marcador) */
+.anim-pushup-diamond .fig-body { animation: kf-pushup 1.2s ease-in-out infinite; }
+.anim-pushup-diamond .arm { transform: rotate(-90deg); }
+.anim-pushup-diamond .fore { animation: kf-pushup-fore 1.2s ease-in-out infinite; }
+.anim-pushup-diamond .fig-diamond { display: block; }
+
+/* arquero: un brazo apoya, el otro se extiende, el cuerpo se desplaza */
+.anim-pushup-archer .fig-body { animation: kf-archer 2s ease-in-out infinite; }
+.anim-pushup-archer .arm-a { transform: rotate(-90deg); }
+.anim-pushup-archer .arm-b { animation: kf-archer-arm 2s ease-in-out infinite; }
+@keyframes kf-archer {
+  0%, 100% { transform: translate(-8px, 16px) rotate(90deg); }
+  50% { transform: translate(8px, 16px) rotate(90deg); }
+}
+@keyframes kf-archer-arm {
+  0%, 100% { transform: rotate(-160deg); }
+  50% { transform: rotate(-110deg); }
+}
+
+/* ===== variantes de plancha ===== */
+/* lateral: cuerpo diagonal apoyado en un brazo */
+.anim-plank-side .fig-body { animation: kf-pside 2.4s ease-in-out infinite; }
+.anim-plank-side .arm-a { transform: rotate(-95deg); }
+.anim-plank-side .arm-b { transform: rotate(-150deg); }
+@keyframes kf-pside {
+  0%, 100% { transform: translate(30px, 8px) rotate(-75deg); }
+  50% { transform: translate(30px, 4px) rotate(-75deg); }
+}
+
+/* toques de hombro: plancha alta alternando brazo */
+.anim-plank-taps .fig-body { transform: translate(0px, 14px) rotate(90deg); }
+.anim-plank-taps .arm-b { transform: rotate(-90deg); }
+.anim-plank-taps .arm-a { animation: kf-taps 1.4s ease-in-out infinite; }
+@keyframes kf-taps {
+  0%, 30%, 100% { transform: rotate(-90deg); }
+  45%, 65% { transform: rotate(-150deg); }
+}
+
+/* ===== variantes de pierna ===== */
+/* sumo: piernas abiertas */
+.anim-squat-sumo .fig-body { animation: kf-squat 1.8s ease-in-out infinite; }
+.anim-squat-sumo .leg-a { animation: kf-sumo-a 1.8s ease-in-out infinite; }
+.anim-squat-sumo .leg-b { animation: kf-sumo-b 1.8s ease-in-out infinite; }
+.anim-squat-sumo .shin { animation: kf-sumo-shin 1.8s ease-in-out infinite; }
+.anim-squat-sumo .arm { transform: rotate(-15deg); }
+@keyframes kf-sumo-a {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(-80deg); }
+}
+@keyframes kf-sumo-b {
+  0%, 100% { transform: rotate(20deg); }
+  50% { transform: rotate(-40deg); }
+}
+@keyframes kf-sumo-shin {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(60deg); }
+}
+
+/* búlgara: pie trasero elevado en la silla */
+.anim-lunge-bulgarian .fig-chair { transform: translate(-70px, -10px); }
+.anim-lunge-bulgarian .fig-body { animation: kf-lunge 1.8s ease-in-out infinite; }
+.anim-lunge-bulgarian .leg-a { transform: rotate(-65deg); }
+.anim-lunge-bulgarian .shin-a { transform: rotate(65deg); }
+.anim-lunge-bulgarian .leg-b { transform: rotate(75deg); }
+.anim-lunge-bulgarian .shin-b { transform: rotate(55deg); }
+
+/* pistol asistido: una pierna extendida, apoyo en la silla */
+.anim-pistol .fig-body { animation: kf-pistol 2s ease-in-out infinite; }
+.anim-pistol .leg-a { transform: rotate(-85deg); }
+.anim-pistol .leg-b { animation: kf-pistol-b 2s ease-in-out infinite; }
+.anim-pistol .arm { transform: rotate(-70deg); }
+@keyframes kf-pistol {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(24px); }
+}
+@keyframes kf-pistol-b {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-35deg); }
+}
+
+/* ===== estiramientos diferenciados ===== */
+/* pecho/hombros: brazos atrás */
+.anim-stretch-chest .arm { transform: rotate(150deg); }
+.anim-stretch-chest .fig-body { animation: kf-stretchc 3s ease-in-out infinite; }
+@keyframes kf-stretchc {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+/* piernas: pliegue hacia los pies */
+.anim-stretch-legs .upper { animation: kf-stretchl 3s ease-in-out infinite; }
+.anim-stretch-legs .arm { transform: rotate(15deg); }
+@keyframes kf-stretchl {
+  0%, 100% { transform: rotate(15deg); }
+  50% { transform: rotate(70deg); }
+}
+
+/* core/espalda: cobra (pecho al frente boca abajo) */
+.anim-stretch-core .fig-body { transform: translate(0px, 14px) rotate(90deg); }
+.anim-stretch-core .arm { transform: rotate(-90deg); }
+.anim-stretch-core .upper { animation: kf-cobra 3s ease-in-out infinite; }
+@keyframes kf-cobra {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(-45deg); }
+}
+
+/* ===== cardio sin salto ===== */
+/* step jacks: paso lateral, brazos suben */
+.anim-jack-step .leg-a { animation: kf-stepj-a 1.1s ease-in-out infinite; }
+.anim-jack-step .leg-b { animation: kf-stepj-b 1.1s ease-in-out infinite; }
+.anim-jack-step .arm-a { animation: kf-jack-arm-a 1.1s ease-in-out infinite; }
+.anim-jack-step .arm-b { animation: kf-jack-arm-b 1.1s ease-in-out infinite; }
+@keyframes kf-stepj-a {
+  0%, 49% { transform: rotate(20deg); }
+  50%, 100% { transform: rotate(0deg); }
+}
+@keyframes kf-stepj-b {
+  0%, 49% { transform: rotate(0deg); }
+  50%, 100% { transform: rotate(-20deg); }
+}
+
+/* marcha en el sitio: rodillas moderadas, más lento */
+.anim-march .leg-a { animation: kf-march-a 1.2s linear infinite; }
+.anim-march .leg-b { animation: kf-march-b 1.2s linear infinite; }
+.anim-march .arm-a { animation: kf-march-b 1.2s linear infinite; }
+.anim-march .arm-b { animation: kf-march-a 1.2s linear infinite; }
+@keyframes kf-march-a {
+  0%, 49% { transform: rotate(-45deg); }
+  50%, 100% { transform: rotate(12deg); }
+}
+@keyframes kf-march-b {
+  0%, 49% { transform: rotate(12deg); }
+  50%, 100% { transform: rotate(-45deg); }
+}
+
+.fig-diamond { display: none; fill: var(--accent); }
 
 /* fallback: pose de pie con balanceo sutil */
 .fig:not([class*="anim-"]) .fig-body { animation: kf-breathe-body 3s ease-in-out infinite; }
