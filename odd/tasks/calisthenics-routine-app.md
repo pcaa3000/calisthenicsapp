@@ -23,7 +23,8 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - T6 [S4] hooks/useLocalStorage + integración en App — inline — done — commit 53c72a3
 - T7 styles.css tema militar + verificación (build OK, vitest 11/11, dev server en :5173) — inline — done — commit 53c72a3
 - T8 [S6] animaciones distintas por variante (6 flexiones, 3 planchas, sumo, búlgara, pistol, 3 estiramientos, step-jacks, marcha) + prop silla/diamante — inline — done
-- T9 [S7] wizard de una pregunta por paso con tarjetas y rangos de edad (estilo calisteniamilitar.site) — inline — done
+- T9 [S7] wizard de una pregunta por paso con tarjetas y rangos de edad (estilo calisteniamilitar.site) — inline — done — commit 3d67c0b
+- T10 [S3, L10] lote de hallazgos de revisión: peso en motor (intensidad + lowImpact ≥120kg), ajuste de tiempo estimado (fitToTarget), 3 ejercicios de espalda + anim 'row', a11y (buttons, focus-visible, Escape, prefers-reduced-motion), keys localStorage :v1, README, quitar sets/vite.svg — inline — done — commit 1eabf73
 
 ## Log
 
@@ -37,3 +38,4 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - L8 (bug reportado por usuario, verbatim): "Las animaciones de \"Flexiones inclinadas (silla)\" y \"Flexiones\"; Plancha abdominal y Plancha lateral, se ven iguales". Causa: variantes compartían el mismo `anim` key. Fix TDD: test exercises.test.ts (cada anim tiene CSS + variantes distintas) → 15 anim keys nuevos con poses propias; props silla y diamante en Figure.
 - L9 (usuario): "Toma en consideracion este site https://calisteniamilitar.site/" — adoptado patrón funnel (una pregunta/paso, tarjetas grandes, rangos de edad, auto-avance). Edad sigue siendo número en Profile (punto medio del rango). @types/node añadido para tests con fs; types incluye "node" en tsconfig.app.json.
 - L10 (revisión final pedida por usuario): hallazgo principal — `weightKg` se captura pero NO se usa en generateRoutine (gap vs S3). Otros: day-cards son divs no accesibles por teclado, sin prefers-reduced-motion, sin ejercicios de espalda/tracción, README sigue siendo el default de Vite, tiempo estimado puede divergir del solicitado, sin temporizador, sin progresión semanal tipo "desafío 21 días".
+- L11 (usuario aprobó implementar hallazgos 1-5 con "si"): T10 ejecutado con TDD (5 tests nuevos en RED primero). Estado final: 19/19 tests, build OK. MuscleGroup extendido con 'espalda'. Pendiente para futuro (recomendado, no pedido): temporizador, días de descanso, cambiar ejercicio, desafío 21 días, PWA, exportar.
