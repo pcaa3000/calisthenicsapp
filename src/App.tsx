@@ -43,6 +43,7 @@ export default function App() {
 
   const showForm = !profile || editing;
   const day = plan?.days.find((d) => d.dayIndex === dayIndex) ?? null;
+  const screenKey = showForm ? 'form' : day ? `day-${day.dayIndex}` : 'plan';
 
   return (
     <div className="app">
@@ -51,23 +52,25 @@ export default function App() {
         <span className="tag">Rutinas en casa · sin gimnasio</span>
       </header>
 
-      {showForm ? (
-        <ProfileForm initial={profile} onSubmit={handleSubmit} />
-      ) : day ? (
-        <DayRoutine
-          day={day}
-          done={done}
-          onToggle={toggle}
-          onBack={() => setDayIndex(null)}
-        />
-      ) : plan ? (
-        <WeeklyPlanView
-          plan={plan}
-          onSelectDay={setDayIndex}
-          onEdit={() => setEditing(true)}
-          onRegenerate={regenerate}
-        />
-      ) : null}
+      <div className="screen" key={screenKey}>
+        {showForm ? (
+          <ProfileForm initial={profile} onSubmit={handleSubmit} />
+        ) : day ? (
+          <DayRoutine
+            day={day}
+            done={done}
+            onToggle={toggle}
+            onBack={() => setDayIndex(null)}
+          />
+        ) : plan ? (
+          <WeeklyPlanView
+            plan={plan}
+            onSelectDay={setDayIndex}
+            onEdit={() => setEditing(true)}
+            onRegenerate={regenerate}
+          />
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -42,6 +42,7 @@ export function DayRoutine({ day, done, onToggle, onBack }: Props) {
           <ExerciseCard
             key={pe.exercise.id}
             planned={pe}
+            index={i}
             done={Boolean(done[key('w', i)])}
             onToggle={() => onToggle(key('w', i))}
             onOpen={() => open('w', i)}
@@ -59,6 +60,7 @@ export function DayRoutine({ day, done, onToggle, onBack }: Props) {
           <ExerciseCard
             key={pe.exercise.id}
             planned={pe}
+            index={i}
             done={Boolean(done[key('m', i)])}
             onToggle={() => onToggle(key('m', i))}
             onOpen={() => open('m', i)}
@@ -72,6 +74,7 @@ export function DayRoutine({ day, done, onToggle, onBack }: Props) {
           <ExerciseCard
             key={pe.exercise.id}
             planned={pe}
+            index={i}
             done={Boolean(done[key('c', i)])}
             onToggle={() => onToggle(key('c', i))}
             onOpen={() => open('c', i)}

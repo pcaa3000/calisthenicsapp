@@ -47,3 +47,30 @@ describe('figure animation quality', () => {
     expect(css).toContain('animation-delay: var(--dly');
   });
 });
+
+describe('ui motion', () => {
+  it('screens, cards and modal get entrance animations', () => {
+    for (const kf of ['kf-screen-in', 'kf-card-in', 'kf-modal-in']) {
+      expect(css, kf).toContain(`@keyframes ${kf}`);
+    }
+  });
+
+  it('modal supports an exit animation', () => {
+    expect(css).toContain('kf-modal-out');
+    expect(css).toContain('.modal-bg.closing');
+  });
+
+  it('no blanket transition:all remains', () => {
+    expect(css).not.toContain('transition: all');
+  });
+
+  it('exercise cards stagger via --i custom property', () => {
+    expect(css).toContain('var(--i');
+  });
+
+  it('reduced motion also neutralizes ui transitions', () => {
+    const block = css.slice(css.indexOf('prefers-reduced-motion'));
+    expect(block).toContain('transition-duration');
+    expect(block).toContain('animation-iteration-count');
+  });
+});

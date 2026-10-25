@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { Figure } from '../figures/Figure';
 import type { PlannedExercise } from '../types';
 
@@ -9,9 +10,10 @@ interface Props {
   done: boolean;
   onToggle: () => void;
   onOpen: () => void;
+  index?: number;
 }
 
-export function ExerciseCard({ planned, done, onToggle, onOpen }: Props) {
+export function ExerciseCard({ planned, done, onToggle, onOpen, index = 0 }: Props) {
   const { exercise: ex } = planned;
   const dose =
     planned.seconds !== undefined
@@ -19,7 +21,10 @@ export function ExerciseCard({ planned, done, onToggle, onOpen }: Props) {
       : `${planned.reps} reps`;
 
   return (
-    <div className={`ex-card ${done ? 'done' : ''}`}>
+    <div
+      className={`ex-card ${done ? 'done' : ''}`}
+      style={{ '--i': index } as CSSProperties}
+    >
       <button className="ex-open" onClick={onOpen} aria-label={`Ver ${ex.name}`}>
         <span className="fig-wrap">
           <Figure anim={ex.anim} size={90} />

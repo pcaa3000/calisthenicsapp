@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Figure } from '../figures/Figure';
 import type { PlannedExercise } from '../types';
 import { videoUrl } from './ExerciseCard';
@@ -15,14 +15,28 @@ export function ExerciseModal({ planned, onClose }: Props) {
       ? `${planned.seconds} segundos`
       : `${planned.reps} repeticiones`;
 
+  const [closing, setClosing] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const requestClose = useCallback(() => {
+    if (closing) return;
+    setClosing(true);
+    timer.current = window.setTimeout(onClose, 160);
+  }, [closing, onClose]);
+
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && requestClose();
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [requestClose]);
 
   return (
-    <div className="modal-bg" onClick={onClose}>
+    <div
+      className={`modal-bg${closing ? ' closing' : ''}`}
+      onClick={requestClose}
+    >
       <div
         className="modal"
         role="dialog"
@@ -47,7 +61,7 @@ export function ExerciseModal({ planned, onClose }: Props) {
           >
             Ver demostración
           </a>
-          <button className="btn ghost small" onClick={onClose}>
+          <button className="btn ghost small" onClick={requestClose}>
             Cerrar
           </button>
         </div>

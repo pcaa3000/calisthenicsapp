@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import App from './App';
+import { DayRoutine } from './components/DayRoutine';
 import { WeeklyPlanView } from './components/WeeklyPlan';
 import { generateRoutine } from './engine/generateRoutine';
 import type { Profile } from './types';
@@ -35,5 +36,23 @@ describe('App', () => {
       />,
     );
     expect(html).toMatch(/<button[^>]*day-card/);
+  });
+
+  it('wraps the active screen in a keyed container for transitions', () => {
+    const html = renderToString(<App />);
+    expect(html).toContain('class="screen"');
+  });
+
+  it('exercise cards carry a stagger index', () => {
+    const plan = generateRoutine(profile, 1);
+    const html = renderToString(
+      <DayRoutine
+        day={plan.days[0]}
+        done={{}}
+        onToggle={() => {}}
+        onBack={() => {}}
+      />,
+    );
+    expect(html).toContain('--i:');
   });
 });
