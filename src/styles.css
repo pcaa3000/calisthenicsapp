@@ -1,0 +1,517 @@
+/* ===== Calistenia Militar — tema ===== */
+:root {
+  --bg: #161a12;
+  --bg2: #1e2418;
+  --card: #232b1c;
+  --card2: #2a3320;
+  --line: #3d4a2e;
+  --olive: #8a9a5b;
+  --olive-hi: #a8bc6e;
+  --khaki: #d6d0a8;
+  --accent: #d97b29;
+  --text: #e8e6d8;
+  --muted: #9aa386;
+  --danger: #c25b4e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+#root { min-height: 100vh; }
+
+.app { max-width: 1020px; margin: 0 auto; padding: 0 16px 48px; }
+
+.app-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 22px 4px 14px;
+  border-bottom: 3px solid var(--line);
+  margin-bottom: 22px;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--khaki);
+}
+.app-header .tag { color: var(--muted); font-size: 0.85rem; }
+
+/* ===== Formulario ===== */
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px;
+}
+.form-card h2 { margin-top: 0; color: var(--olive-hi); letter-spacing: 1px; }
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.field input[type="number"], .field select {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: 1rem;
+}
+.field input:focus, .field select:focus { outline: 2px solid var(--olive); }
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: var(--text);
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--olive); }
+.chip.on { background: var(--olive); color: #11150c; font-weight: 600; border-color: var(--olive); }
+.form-error { color: var(--danger); margin: 10px 0 0; }
+
+.btn {
+  background: var(--olive);
+  color: #11150c;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn:hover { background: var(--olive-hi); }
+.btn.ghost { background: transparent; color: var(--khaki); border: 1px solid var(--line); }
+.btn.ghost:hover { border-color: var(--olive); }
+.btn.small { padding: 7px 14px; font-size: 0.8rem; }
+.btn-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+
+.steps { display: flex; gap: 6px; margin-bottom: 18px; }
+.steps span { flex: 1; height: 4px; background: var(--line); border-radius: 2px; }
+.steps span.done { background: var(--olive); }
+
+/* ===== Plan semanal ===== */
+.plan-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.plan-head h2 { margin: 0; color: var(--olive-hi); }
+.day-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.day-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s;
+}
+.day-card:hover { transform: translateY(-3px); border-color: var(--olive); }
+.day-card h3 { margin: 0 0 8px; font-size: 1rem; color: var(--khaki); }
+.day-card .meta { color: var(--muted); font-size: 0.85rem; }
+.day-card .count { margin-top: 10px; color: var(--olive-hi); font-size: 0.9rem; }
+
+/* ===== Rutina del día ===== */
+.routine-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.routine-head h2 { margin: 0; color: var(--khaki); }
+.block-label {
+  margin: 26px 0 10px;
+  color: var(--olive-hi);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border-left: 4px solid var(--accent);
+  padding-left: 10px;
+}
+.ex-list { display: flex; flex-direction: column; gap: 12px; }
+.ex-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+.ex-card .fig-wrap { flex: 0 0 96px; }
+.ex-card .info { flex: 1; min-width: 0; }
+.ex-card h4 { margin: 0 0 4px; color: var(--text); }
+.ex-card .dose { color: var(--olive-hi); font-weight: 600; font-size: 0.95rem; }
+.ex-card .desc { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+.ex-card .tags { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+.tag-pill { font-size: 0.7rem; background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 2px 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.ex-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.check-done { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); cursor: pointer; }
+.check-done input { accent-color: var(--olive); width: 18px; height: 18px; cursor: pointer; }
+.ex-card.done { opacity: 0.55; }
+.ex-card.done h4 { text-decoration: line-through; }
+.video-link { color: var(--accent); font-size: 0.85rem; text-decoration: none; }
+.video-link:hover { text-decoration: underline; }
+.rounds-banner {
+  background: var(--card2);
+  border: 1px dashed var(--olive);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--khaki);
+  margin-bottom: 4px;
+}
+.clickable { cursor: pointer; }
+
+/* ===== Modal ===== */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+.modal {
+  background: var(--card);
+  border: 1px solid var(--olive);
+  border-radius: 12px;
+  max-width: 460px;
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+}
+.modal h3 { margin-top: 0; color: var(--khaki); }
+.modal .desc { color: var(--muted); margin: 12px 0; }
+
+/* ===== Figura animada (stick figure) ===== */
+.fig { display: block; color: var(--khaki); overflow: visible; }
+.fig line { stroke: currentColor; stroke-width: 4; stroke-linecap: round; fill: none; }
+.fig .head { fill: var(--bg); stroke: currentColor; stroke-width: 4; }
+.fig-ground { stroke-width: 2; opacity: 0.35; }
+.fig-wall { display: none; stroke-width: 5; opacity: 0.3; }
+
+.fig-body, .upper, .lower, .arm, .fore, .leg, .shin { transform-box: view-box; }
+.fig-body { transform-origin: 70px 60px; }
+.upper { transform-origin: 70px 44px; }
+.arm { transform-origin: 70px 30px; }
+.fore { transform-origin: 70px 52px; }
+.leg { transform-origin: 70px 60px; }
+.shin { transform-origin: 70px 86px; }
+
+/* -- poses de suelo (boca abajo): pushup / pike / commando / plank / climber / crawl / burpee / superman -- */
+.anim-pushup .fig-body { animation: kf-pushup 1.6s ease-in-out infinite; }
+.anim-pushup .arm { transform: rotate(-90deg); }
+.anim-pushup .fore { animation: kf-pushup-fore 1.6s ease-in-out infinite; }
+@keyframes kf-pushup {
+  0%, 100% { transform: translate(0px, 10px) rotate(90deg); }
+  50% { transform: translate(0px, 22px) rotate(90deg); }
+}
+@keyframes kf-pushup-fore {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(45deg); }
+}
+
+.anim-pike .fig-body { transform: translate(-4px, 4px) rotate(55deg); animation: kf-pike 1.6s ease-in-out infinite; }
+.anim-pike .arm { transform: rotate(-110deg); }
+@keyframes kf-pike {
+  0%, 100% { transform: translate(-4px, 4px) rotate(55deg); }
+  50% { transform: translate(-4px, 16px) rotate(55deg); }
+}
+
+.anim-plank .fig-body { transform: translate(0px, 14px) rotate(90deg); animation: kf-plank 2.4s ease-in-out infinite; }
+.anim-plank .fore, .anim-plank .arm { transform: rotate(-90deg); }
+.anim-plank .fore { transform: rotate(-90deg) rotate(-80deg); }
+@keyframes kf-plank {
+  0%, 100% { transform: translate(0px, 14px) rotate(90deg); }
+  50% { transform: translate(0px, 16px) rotate(90deg); }
+}
+
+.anim-commando .fig-body { animation: kf-commando 1.8s ease-in-out infinite; }
+.anim-commando .arm { transform: rotate(-90deg); }
+@keyframes kf-commando {
+  0%, 100% { transform: translate(0px, 10px) rotate(90deg); }
+  50% { transform: translate(0px, 20px) rotate(90deg); }
+}
+
+.anim-climber .fig-body { transform: translate(0px, 14px) rotate(90deg); }
+.anim-climber .arm { transform: rotate(-90deg); }
+.anim-climber .leg-a { animation: kf-climb-a 0.7s linear infinite; }
+.anim-climber .leg-b { animation: kf-climb-b 0.7s linear infinite; }
+@keyframes kf-climb-a {
+  0%, 49% { transform: rotate(-55deg); }
+  50%, 100% { transform: rotate(0deg); }
+}
+@keyframes kf-climb-b {
+  0%, 49% { transform: rotate(0deg); }
+  50%, 100% { transform: rotate(-55deg); }
+}
+
+.anim-crawl .fig-body { transform: translate(0px, 14px) rotate(90deg); animation: kf-crawl 1.2s linear infinite; }
+.anim-crawl .arm-a { animation: kf-crawl-a 1.2s linear infinite; }
+.anim-crawl .arm-b { animation: kf-crawl-b 1.2s linear infinite; }
+.anim-crawl .leg-a { animation: kf-crawl-b 1.2s linear infinite; }
+.anim-crawl .leg-b { animation: kf-crawl-a 1.2s linear infinite; }
+@keyframes kf-crawl-a {
+  0%, 49% { transform: rotate(-55deg); }
+  50%, 100% { transform: rotate(-75deg); }
+}
+@keyframes kf-crawl-b {
+  0%, 49% { transform: rotate(-75deg); }
+  50%, 100% { transform: rotate(-55deg); }
+}
+@keyframes kf-crawl {
+  0%, 100% { transform: translate(-4px, 14px) rotate(90deg); }
+  50% { transform: translate(4px, 14px) rotate(90deg); }
+}
+
+.anim-superman .fig-body { transform: translate(0px, 14px) rotate(90deg); }
+.anim-superman .arm { transform: rotate(165deg); animation: kf-super-arm 1.4s ease-in-out infinite; }
+.anim-superman .leg { transform: rotate(-35deg); animation: kf-super-leg 1.4s ease-in-out infinite; }
+@keyframes kf-super-arm {
+  0%, 100% { transform: rotate(165deg); }
+  50% { transform: rotate(185deg); }
+}
+@keyframes kf-super-leg {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(-45deg); }
+}
+
+.anim-burpee .fig-body { animation: kf-burpee 2.4s ease-in-out infinite; }
+.anim-burpee .arm { animation: kf-burpee-arm 2.4s ease-in-out infinite; }
+@keyframes kf-burpee {
+  0%, 15% { transform: translate(0px, 0px) rotate(0deg); }
+  30%, 60% { transform: translate(0px, 14px) rotate(90deg); }
+  80%, 95% { transform: translate(0px, 0px) rotate(0deg); }
+  100% { transform: translate(0px, -12px) rotate(0deg); }
+}
+@keyframes kf-burpee-arm {
+  0%, 15% { transform: rotate(0deg); }
+  30%, 60% { transform: rotate(-90deg); }
+  80%, 100% { transform: rotate(0deg); }
+}
+
+/* poses supinas (boca arriba) */
+.anim-crunch .fig-body { transform: translate(0px, 14px) rotate(-90deg); }
+.anim-crunch .upper { animation: kf-crunch 1.4s ease-in-out infinite; }
+@keyframes kf-crunch {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(40deg); }
+}
+
+.anim-legraise .fig-body { transform: translate(0px, 14px) rotate(-90deg); }
+.anim-legraise .leg { animation: kf-legraise 1.8s ease-in-out infinite; }
+@keyframes kf-legraise {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-85deg); }
+}
+
+.anim-hollow .fig-body { transform: translate(0px, 14px) rotate(-90deg); }
+.anim-hollow .upper { transform: rotate(22deg); animation: kf-hollow-up 2s ease-in-out infinite; }
+.anim-hollow .leg { transform: rotate(-25deg); animation: kf-hollow-leg 2s ease-in-out infinite; }
+@keyframes kf-hollow-up {
+  0%, 100% { transform: rotate(18deg); }
+  50% { transform: rotate(26deg); }
+}
+@keyframes kf-hollow-leg {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(-30deg); }
+}
+
+.anim-bridge .fig-body { transform: translate(0px, 14px) rotate(-90deg); }
+.anim-bridge .upper { animation: kf-bridge 1.6s ease-in-out infinite; }
+.anim-bridge .leg { transform: rotate(-75deg); }
+.anim-bridge .shin { transform: rotate(75deg); }
+@keyframes kf-bridge {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-30deg); }
+}
+
+.anim-birddog .fig-body { transform: translate(0px, 14px) rotate(90deg); }
+.anim-birddog .leg { transform: rotate(75deg); }
+.anim-birddog .shin { transform: rotate(-75deg); }
+.anim-birddog .arm-a { animation: kf-birddog-a 1.6s ease-in-out infinite; }
+.anim-birddog .leg-a { animation: kf-birddog-a 1.6s ease-in-out infinite; }
+@keyframes kf-birddog-a {
+  0%, 100% { transform: rotate(75deg); }
+  50% { transform: rotate(-10deg); }
+}
+
+/* poses de pie */
+.anim-squat .fig-body { animation: kf-squat 1.8s ease-in-out infinite; }
+.anim-squat .leg { animation: kf-squat-leg 1.8s ease-in-out infinite; }
+.anim-squat .shin { animation: kf-squat-shin 1.8s ease-in-out infinite; }
+.anim-squat .arm { animation: kf-squat-arm 1.8s ease-in-out infinite; }
+@keyframes kf-squat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(32px); }
+}
+@keyframes kf-squat-leg {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-60deg); }
+}
+@keyframes kf-squat-shin {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(60deg); }
+}
+@keyframes kf-squat-arm {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-65deg); }
+}
+
+.anim-squatjump .fig-body { animation: kf-squatjump 1.5s ease-in-out infinite; }
+.anim-squatjump .leg { animation: kf-squatjump-leg 1.5s ease-in-out infinite; }
+.anim-squatjump .shin { animation: kf-squat-shin 1.5s ease-in-out infinite; }
+@keyframes kf-squatjump {
+  0%, 30% { transform: translateY(0px); }
+  45% { transform: translateY(32px); }
+  60%, 75% { transform: translateY(-16px); }
+  90%, 100% { transform: translateY(0px); }
+}
+@keyframes kf-squatjump-leg {
+  0%, 30% { transform: rotate(0deg); }
+  45% { transform: rotate(-60deg); }
+  60% { transform: rotate(-14deg); }
+  75% { transform: rotate(14deg); }
+  90%, 100% { transform: rotate(0deg); }
+}
+
+.anim-lunge .fig-body { animation: kf-lunge 1.8s ease-in-out infinite; }
+.anim-lunge .leg-a { transform: rotate(-65deg); }
+.anim-lunge .shin-a { transform: rotate(65deg); }
+.anim-lunge .leg-b { transform: rotate(40deg); }
+@keyframes kf-lunge {
+  0%, 100% { transform: translateY(4px); }
+  50% { transform: translateY(16px); }
+}
+
+.anim-wallsit .fig-wall { display: block; }
+.anim-wallsit .fig-body { transform: translate(-18px, 32px); animation: kf-wallsit 2.6s ease-in-out infinite; }
+.anim-wallsit .leg { transform: rotate(-85deg); }
+.anim-wallsit .shin { transform: rotate(85deg); }
+@keyframes kf-wallsit {
+  0%, 100% { transform: translate(-18px, 32px); }
+  50% { transform: translate(-18px, 34px); }
+}
+
+.anim-calfraise .fig-body { animation: kf-calf 1.2s ease-in-out infinite; }
+.anim-calfraise .arm { transform: rotate(-40deg); }
+@keyframes kf-calf {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+.anim-jack .fig-body { animation: kf-jack-body 0.9s ease-in-out infinite; }
+.anim-jack .leg-a { animation: kf-jack-leg-a 0.9s ease-in-out infinite; }
+.anim-jack .leg-b { animation: kf-jack-leg-b 0.9s ease-in-out infinite; }
+.anim-jack .arm-a { animation: kf-jack-arm-a 0.9s ease-in-out infinite; }
+.anim-jack .arm-b { animation: kf-jack-arm-b 0.9s ease-in-out infinite; }
+@keyframes kf-jack-body {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes kf-jack-leg-a {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(18deg); }
+}
+@keyframes kf-jack-leg-b {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-18deg); }
+}
+@keyframes kf-jack-arm-a {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-140deg); }
+}
+@keyframes kf-jack-arm-b {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-140deg); }
+}
+
+.anim-highknees .fig-body { animation: kf-calf 0.7s linear infinite; }
+.anim-highknees .leg-a { animation: kf-knees-a 0.7s linear infinite; }
+.anim-highknees .leg-b { animation: kf-knees-b 0.7s linear infinite; }
+.anim-highknees .arm-a { animation: kf-knees-b 0.7s linear infinite; }
+.anim-highknees .arm-b { animation: kf-knees-a 0.7s linear infinite; }
+@keyframes kf-knees-a {
+  0%, 49% { transform: rotate(-75deg); }
+  50%, 100% { transform: rotate(15deg); }
+}
+@keyframes kf-knees-b {
+  0%, 49% { transform: rotate(15deg); }
+  50%, 100% { transform: rotate(-75deg); }
+}
+
+.anim-skater .fig-body { animation: kf-skater 1.4s ease-in-out infinite; }
+.anim-skater .leg-a { animation: kf-knees-a 1.4s ease-in-out infinite; }
+.anim-skater .arm { animation: kf-skater-arm 1.4s ease-in-out infinite; }
+@keyframes kf-skater {
+  0%, 100% { transform: translate(-14px, 6px) rotate(-8deg); }
+  50% { transform: translate(14px, 6px) rotate(8deg); }
+}
+@keyframes kf-skater-arm {
+  0%, 100% { transform: rotate(35deg); }
+  50% { transform: rotate(-35deg); }
+}
+
+.anim-dip .fig-body { transform: translate(0px, -14px); animation: kf-dip 1.6s ease-in-out infinite; }
+.anim-dip .leg { transform: rotate(80deg); }
+.anim-dip .shin { transform: rotate(-70deg); }
+.anim-dip .fore { animation: kf-dip-fore 1.6s ease-in-out infinite; }
+@keyframes kf-dip {
+  0%, 100% { transform: translate(0px, -14px); }
+  50% { transform: translate(0px, 2px); }
+}
+@keyframes kf-dip-fore {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(60deg); }
+}
+
+.anim-twist .fig-body { transform: translate(0px, 26px); }
+.anim-twist .leg { transform: rotate(85deg); }
+.anim-twist .shin { transform: rotate(-85deg); }
+.anim-twist .upper { animation: kf-twist 1.6s ease-in-out infinite; }
+@keyframes kf-twist {
+  0%, 100% { transform: rotate(-18deg); }
+  50% { transform: rotate(18deg); }
+}
+
+.anim-circles .arm { animation: kf-spin 2.4s linear infinite; }
+.anim-circles .arm-b { animation-delay: -1.2s; }
+@keyframes kf-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.anim-stretch .fig-body { animation: kf-stretch 2.6s ease-in-out infinite; }
+.anim-stretch .arm { transform: rotate(-35deg); }
+@keyframes kf-stretch {
+  0%, 100% { transform: translate(0px, 0px) rotate(-14deg); }
+  50% { transform: translate(0px, 0px) rotate(14deg); }
+}
+
+.anim-breathe .arm { animation: kf-breathe 3.4s ease-in-out infinite; }
+.anim-breathe .fig-body { animation: kf-breathe-body 3.4s ease-in-out infinite; }
+@keyframes kf-breathe {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-155deg); }
+}
+@keyframes kf-breathe-body {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+/* fallback: pose de pie con balanceo sutil */
+.fig:not([class*="anim-"]) .fig-body { animation: kf-breathe-body 3s ease-in-out infinite; }
+
+@media (max-width: 560px) {
+  .ex-card { flex-direction: row; }
+  .ex-card .fig-wrap { flex-basis: 72px; }
+  .app-header h1 { font-size: 1.2rem; }
+}
