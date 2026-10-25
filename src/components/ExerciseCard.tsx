@@ -20,26 +20,28 @@ export function ExerciseCard({ planned, done, onToggle, onOpen }: Props) {
 
   return (
     <div className={`ex-card ${done ? 'done' : ''}`}>
-      <div className="fig-wrap clickable" onClick={onOpen}>
-        <Figure anim={ex.anim} size={90} />
-      </div>
-      <div className="info clickable" onClick={onOpen}>
-        <h4>{ex.name}</h4>
-        <div className="dose">
-          {dose}
-          {planned.restSeconds > 15 && ` · descanso ${planned.restSeconds}s`}
-        </div>
-        <div className="desc">{ex.desc}</div>
-        <div className="tags">
-          {ex.muscles.map((m) => (
-            <span key={m} className="tag-pill">
-              {m}
-            </span>
-          ))}
-          {ex.impact === 'high' && <span className="tag-pill">impacto</span>}
-          {ex.needsFurniture && <span className="tag-pill">silla</span>}
-        </div>
-      </div>
+      <button className="ex-open" onClick={onOpen} aria-label={`Ver ${ex.name}`}>
+        <span className="fig-wrap">
+          <Figure anim={ex.anim} size={90} />
+        </span>
+        <span className="info">
+          <strong className="ex-name">{ex.name}</strong>
+          <div className="dose">
+            {dose}
+            {planned.restSeconds > 15 && ` · descanso ${planned.restSeconds}s`}
+          </div>
+          <div className="desc">{ex.desc}</div>
+          <div className="tags">
+            {ex.muscles.map((m) => (
+              <span key={m} className="tag-pill">
+                {m}
+              </span>
+            ))}
+            {ex.impact === 'high' && <span className="tag-pill">impacto</span>}
+            {ex.needsFurniture && <span className="tag-pill">silla</span>}
+          </div>
+        </span>
+      </button>
       <div className="ex-actions">
         <label className="check-done">
           <input type="checkbox" checked={done} onChange={onToggle} />

@@ -87,9 +87,39 @@ describe('generateRoutine', () => {
   it('assigns reps or seconds and rest to every main exercise', () => {
     const plan = generateRoutine(baseProfile, 21);
     for (const pe of allMain(plan)) {
-      expect(pe.sets).toBeGreaterThanOrEqual(1);
       expect(pe.restSeconds).toBeGreaterThan(0);
       expect(pe.reps !== undefined || pe.seconds !== undefined).toBe(true);
+    }
+  });
+
+  it('reduces work for heavier users', () => {
+    const light = generateRoutine({ ...baseProfile, weightKg: 60 }, 5);
+    const heavy = generateRoutine({ ...baseProfile, weightKg: 120 }, 5);
+    const dose = (p: typeof light) =>
+      allMain(p).reduce((n, pe) => n + (pe.reps ?? pe.seconds ?? 0), 0);
+    expect(dose(heavy)).toBeLessThan(dose(light));
+  });
+
+  it('removes high-impact exercises for very heavy users of any body type', () => {
+    const plan = generateRoutine(
+      { ...baseProfile, weightKg: 120, bodyType: 'medio' },
+      11,
+    );
+    for (const pe of allMain(plan)) {
+      expect(pe.exercise.impact).toBe('low');
+    }
+  });
+
+  it('estimates session duration close to the requested time', () => {
+    for (const m of [15, 30, 60]) {
+      const plan = generateRoutine({ ...baseProfile, minutesPerSession: m }, 8);
+      for (const day of plan.days) {
+        const tolerance = Math.max(4, m * 0.3);
+        expect(
+          Math.abs(day.estimatedMinutes - m),
+          `day ${day.title} at ${m}min target`,
+        ).toBeLessThanOrEqual(tolerance);
+      }
     }
   });
 });

@@ -1,32 +1,27 @@
-# React + TypeScript + Vite
+# Calistenia Militar
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Web app que genera rutinas semanales de calistenia militar para entrenar en casa, sin equipamiento de gimnasio.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Wizard de perfil (edad, peso, tipo de cuerpo, nivel, días/semana, tiempo por sesión, objetivo, enfoque muscular).
+- Plan semanal generado: calentamiento + circuito principal + vuelta a la calma por día.
+- 37 ejercicios con figuras SVG animadas propias y enlace a video demostrativo.
+- Personalización: objetivo (bajar peso / ganar músculo / atlético), nivel (básico / intermedio / avanzado), enfoques (pecho, pierna, brazo, core), bajo impacto automático para obeso, 50+ años o 120+ kg.
+- Persistencia en `localStorage` (perfil, plan y ejercicios completados).
 
-## React Compiler
+## Desarrollo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev    # http://localhost:5173
+npm test       # vitest
+npm run build  # typecheck + build de producción
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Estructura
+
+- `src/engine/generateRoutine.ts` — motor de generación (determinista por seed).
+- `src/data/exercises.ts` — biblioteca de ejercicios.
+- `src/figures/Figure.tsx` — figura stick-figure animada por CSS (`anim-*` en `src/styles.css`).
+- `src/components/` — wizard, plan semanal, rutina del día, tarjeta/modal de ejercicio.

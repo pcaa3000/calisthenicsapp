@@ -37,4 +37,10 @@ describe('exercise animations', () => {
     expect(byId('plancha_lateral').anim).not.toBe(a);
     expect(byId('plancha_toques_hombro').anim).not.toBe(a);
   });
+
+  it('includes pulling exercises for balanced routines', () => {
+    const pulls = EXERCISES.filter((e) => e.muscles.includes('espalda'));
+    expect(pulls.length).toBeGreaterThanOrEqual(2);
+    for (const e of pulls) expect(e.impact).toBe('low');
+  });
 });

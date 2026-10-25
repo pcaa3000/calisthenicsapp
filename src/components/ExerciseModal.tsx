@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Figure } from '../figures/Figure';
 import type { PlannedExercise } from '../types';
 import { videoUrl } from './ExerciseCard';
@@ -14,9 +15,21 @@ export function ExerciseModal({ planned, onClose }: Props) {
       ? `${planned.seconds} segundos`
       : `${planned.reps} repeticiones`;
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
   return (
     <div className="modal-bg" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={ex.name}
+        onClick={(e) => e.stopPropagation()}
+      >
         <h3>{ex.name}</h3>
         <Figure anim={ex.anim} size={200} />
         <p className="desc">{ex.desc}</p>

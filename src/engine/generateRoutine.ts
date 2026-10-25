@@ -45,8 +45,8 @@ const THEMES: Record<string, DayTheme> = {
   },
   brazo: {
     key: 'brazo',
-    label: 'Brazo y hombro',
-    weights: { brazo: 0.4, pecho: 0.3, core: 0.15, pierna: 0.15 },
+    label: 'Brazo, hombro y espalda',
+    weights: { brazo: 0.3, pecho: 0.25, espalda: 0.2, core: 0.15, pierna: 0.1 },
     cardioShare: 0.15,
   },
   core: {
@@ -58,7 +58,14 @@ const THEMES: Record<string, DayTheme> = {
   fullbody: {
     key: 'fullbody',
     label: 'Cuerpo completo',
-    weights: { pecho: 0.2, pierna: 0.25, brazo: 0.15, core: 0.2, fullbody: 0.2 },
+    weights: {
+      pecho: 0.15,
+      pierna: 0.25,
+      brazo: 0.1,
+      espalda: 0.15,
+      core: 0.2,
+      fullbody: 0.15,
+    },
     cardioShare: 0.25,
   },
   cardio: {
@@ -70,7 +77,7 @@ const THEMES: Record<string, DayTheme> = {
 };
 
 function lowImpactOnly(p: Profile): boolean {
-  return p.bodyType === 'obeso' || p.age >= 50;
+  return p.bodyType === 'obeso' || p.age >= 50 || p.weightKg >= 120;
 }
 
 function themeRotation(p: Profile, rand: () => number): DayTheme[] {
@@ -114,6 +121,9 @@ function intensityFactor(p: Profile): number {
   else if (p.age >= 40) f *= 0.9;
   if (p.bodyType === 'obeso') f *= 0.75;
   else if (p.bodyType === 'delgado' && p.goal === 'ganar_musculo') f *= 1.05;
+  if (p.weightKg >= 110) f *= 0.8;
+  else if (p.weightKg >= 95) f *= 0.9;
+  else if (p.weightKg <= 50) f *= 1.05;
   return f;
 }
 
@@ -184,7 +194,6 @@ function toPlanned(e: Exercise, p: Profile): PlannedExercise {
   const f = intensityFactor(p);
   const planned: PlannedExercise = {
     exercise: e,
-    sets: e.kind === 'main' ? 1 : 1, // main block runs as circuit rounds
     restSeconds: e.kind === 'main' ? restSeconds(p) : 10,
   };
   if (e.baseSeconds !== undefined) {
@@ -193,6 +202,30 @@ function toPlanned(e: Exercise, p: Profile): PlannedExercise {
     planned.reps = Math.max(3, Math.round((e.baseReps ?? 10) * f));
   }
   return planned;
+}
+
+const workSeconds = (pe: PlannedExercise) => pe.seconds ?? (pe.reps ?? 0) * 2.5;
+
+// Rescale main-block doses so the estimated duration tracks the requested time.
+function fitToTarget(
+  main: PlannedExercise[],
+  fixedSec: number,
+  rounds: number,
+  targetSec: number,
+): void {
+  const rest = rounds * main.reduce((s, pe) => s + pe.restSeconds, 0);
+  const work = rounds * main.reduce((s, pe) => s + workSeconds(pe), 0);
+  const desired = targetSec - fixedSec - rest;
+  if (work <= 0 || desired <= 0) return;
+  const scale = Math.min(1.6, Math.max(0.6, desired / work));
+  if (Math.abs(scale - 1) < 0.05) return;
+  for (const pe of main) {
+    if (pe.seconds !== undefined) {
+      pe.seconds = Math.max(10, Math.round((pe.seconds * scale) / 5) * 5);
+    } else {
+      pe.reps = Math.max(3, Math.round((pe.reps ?? 0) * scale));
+    }
+  }
 }
 
 export function generateRoutine(p: Profile, seed = Date.now()): WeeklyPlan {
@@ -230,12 +263,14 @@ export function generateRoutine(p: Profile, seed = Date.now()): WeeklyPlan {
       .slice(0, 3)
       .map((e) => toPlanned(e, p));
 
-    const workSec = (pe: PlannedExercise) =>
-      (pe.seconds ?? (pe.reps ?? 0) * 2.5) * pe.sets;
+    const fixedSec =
+      warm.reduce((s, pe) => s + workSeconds(pe) + 10, 0) +
+      cool.reduce((s, pe) => s + workSeconds(pe) + 10, 0);
+    fitToTarget(main, fixedSec, rounds, p.minutesPerSession * 60);
+
     const estSec =
-      warm.reduce((s, pe) => s + workSec(pe) + 10, 0) +
-      rounds * main.reduce((s, pe) => s + workSec(pe) + pe.restSeconds, 0) +
-      cool.reduce((s, pe) => s + workSec(pe) + 10, 0);
+      fixedSec +
+      rounds * main.reduce((s, pe) => s + workSeconds(pe) + pe.restSeconds, 0);
 
     return {
       dayIndex,

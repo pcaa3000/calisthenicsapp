@@ -23,9 +23,9 @@ export function WeeklyPlanView({ plan, onSelectDay, onEdit, onRegenerate }: Prop
       </div>
       <div className="day-grid">
         {plan.days.map((d) => (
-          <div
+          <button
             key={d.dayIndex}
-            className="day-card clickable"
+            className="day-card"
             onClick={() => onSelectDay(d.dayIndex)}
           >
             <h3>{d.title}</h3>
@@ -33,7 +33,7 @@ export function WeeklyPlanView({ plan, onSelectDay, onEdit, onRegenerate }: Prop
               ≈ {d.estimatedMinutes} min · {d.rounds} rondas
             </div>
             <div className="count">{d.main.length} ejercicios</div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

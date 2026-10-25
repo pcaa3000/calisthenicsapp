@@ -8,12 +8,15 @@ import type { Profile, WeeklyPlan } from './types';
 
 export default function App() {
   const [profile, setProfile] = useLocalStorage<Profile | null>(
-    'cm:profile',
+    'cm:profile:v1',
     null,
   );
-  const [plan, setPlan] = useLocalStorage<WeeklyPlan | null>('cm:plan', null);
+  const [plan, setPlan] = useLocalStorage<WeeklyPlan | null>(
+    'cm:plan:v1',
+    null,
+  );
   const [done, setDone] = useLocalStorage<Record<string, boolean>>(
-    'cm:done',
+    'cm:done:v1',
     {},
   );
   const [editing, setEditing] = useState(false);

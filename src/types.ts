@@ -2,7 +2,13 @@ export type BodyType = 'delgado' | 'medio' | 'grueso' | 'obeso';
 export type Goal = 'bajar_peso' | 'ganar_musculo' | 'atletico';
 export type Level = 'basico' | 'intermedio' | 'avanzado';
 export type Focus = 'pecho' | 'pierna' | 'brazo' | 'core';
-export type MuscleGroup = 'pecho' | 'pierna' | 'brazo' | 'core' | 'fullbody';
+export type MuscleGroup =
+  | 'pecho'
+  | 'pierna'
+  | 'brazo'
+  | 'core'
+  | 'espalda'
+  | 'fullbody';
 
 export interface Profile {
   age: number;
@@ -36,7 +42,6 @@ export interface Exercise {
 
 export interface PlannedExercise {
   exercise: Exercise;
-  sets: number;
   reps?: number;
   seconds?: number;
   restSeconds: number;
