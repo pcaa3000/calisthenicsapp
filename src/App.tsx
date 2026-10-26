@@ -67,7 +67,7 @@ export default function App() {
         {!showForm && !timer.active && (
           <button
             className="btn ghost small app-timer-btn"
-            onClick={timer.activate}
+            onClick={() => timer.activate(day)}
           >
             ⏱ Timer
           </button>

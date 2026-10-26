@@ -953,3 +953,34 @@ body {
     50% { opacity: 0.35; }
   }
 }
+
+.timer-step-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.timer-step-name {
+  color: var(--text);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.timer-step-info .meta { color: var(--muted); font-size: 0.78rem; }
+.timer-modes { display: flex; gap: 4px; }
+.mode-chip {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mode-chip.on { background: var(--olive); color: #11150c; border-color: var(--olive); font-weight: 700; }
+.mode-chip:focus-visible { outline: 2px solid var(--olive-hi); outline-offset: 2px; }
+.timer-bar-inner { flex-wrap: wrap; }
