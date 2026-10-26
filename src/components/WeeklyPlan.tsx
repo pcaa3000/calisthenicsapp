@@ -2,12 +2,23 @@ import type { WeeklyPlan } from '../types';
 
 interface Props {
   plan: WeeklyPlan;
+  totalWeeks: number;
+  onPrevWeek: () => void;
+  onNextWeek: () => void;
   onSelectDay: (dayIndex: number) => void;
   onEdit: () => void;
   onRegenerate: () => void;
 }
 
-export function WeeklyPlanView({ plan, onSelectDay, onEdit, onRegenerate }: Props) {
+export function WeeklyPlanView({
+  plan,
+  totalWeeks,
+  onPrevWeek,
+  onNextWeek,
+  onSelectDay,
+  onEdit,
+  onRegenerate,
+}: Props) {
   return (
     <div>
       <div className="plan-head">
@@ -21,6 +32,31 @@ export function WeeklyPlanView({ plan, onSelectDay, onEdit, onRegenerate }: Prop
           </button>
         </div>
       </div>
+
+      {totalWeeks > 1 && (
+        <div className="week-nav">
+          <button
+            className="btn ghost small"
+            onClick={onPrevWeek}
+            disabled={plan.week <= 1}
+            aria-label="Semana anterior"
+          >
+            ‹
+          </button>
+          <span className="meta">
+            Semana {plan.week} de {totalWeeks} · {plan.phaseLabel}
+          </span>
+          <button
+            className="btn ghost small"
+            onClick={onNextWeek}
+            disabled={plan.week >= totalWeeks}
+            aria-label="Semana siguiente"
+          >
+            ›
+          </button>
+        </div>
+      )}
+
       <div className="day-grid">
         {plan.days.map((d) => (
           <button

@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { DayRoutine } from './components/DayRoutine';
 import { ProfileForm } from './components/ProfileForm';
 import { WeeklyPlanView } from './components/WeeklyPlan';
-import { generateRoutine } from './engine/generateRoutine';
+import { generateMonth } from './engine/generateRoutine';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import type { Profile, WeeklyPlan } from './types';
+import type { MonthlyPlan, Profile } from './types';
 
 export default function App() {
   const [profile, setProfile] = useLocalStorage<Profile | null>(
     'cm:profile:v1',
     null,
   );
-  const [plan, setPlan] = useLocalStorage<WeeklyPlan | null>(
-    'cm:plan:v1',
+  const [month, setMonth] = useLocalStorage<MonthlyPlan | null>(
+    'cm:month:v1',
     null,
   );
+  const [weekIndex, setWeekIndex] = useLocalStorage<number>('cm:week:v1', 0);
   const [done, setDone] = useLocalStorage<Record<string, boolean>>(
     'cm:done:v1',
     {},
@@ -22,9 +23,14 @@ export default function App() {
   const [editing, setEditing] = useState(false);
   const [dayIndex, setDayIndex] = useState<number | null>(null);
 
+  const plan = month
+    ? month.weeks[Math.min(weekIndex, month.weeks.length - 1)]
+    : null;
+
   const handleSubmit = (p: Profile) => {
     setProfile(p);
-    setPlan(generateRoutine(p));
+    setMonth(generateMonth(p));
+    setWeekIndex(0);
     setDone({});
     setEditing(false);
     setDayIndex(null);
@@ -32,7 +38,8 @@ export default function App() {
 
   const regenerate = () => {
     if (profile) {
-      setPlan(generateRoutine(profile));
+      setMonth(generateMonth(profile));
+      setWeekIndex(0);
       setDone({});
       setDayIndex(null);
     }
@@ -58,6 +65,7 @@ export default function App() {
         ) : day ? (
           <DayRoutine
             day={day}
+            ns={`w${weekIndex}:`}
             done={done}
             onToggle={toggle}
             onBack={() => setDayIndex(null)}
@@ -65,6 +73,13 @@ export default function App() {
         ) : plan ? (
           <WeeklyPlanView
             plan={plan}
+            totalWeeks={month?.weeks.length ?? 1}
+            onPrevWeek={() => setWeekIndex((i) => Math.max(0, i - 1))}
+            onNextWeek={() =>
+              setWeekIndex((i) =>
+                Math.min((month?.weeks.length ?? 1) - 1, i + 1),
+              )
+            }
             onSelectDay={setDayIndex}
             onEdit={() => setEditing(true)}
             onRegenerate={regenerate}

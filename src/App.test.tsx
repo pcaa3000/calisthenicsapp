@@ -30,6 +30,9 @@ describe('App', () => {
     const html = renderToString(
       <WeeklyPlanView
         plan={plan}
+        totalWeeks={4}
+        onPrevWeek={() => {}}
+        onNextWeek={() => {}}
         onSelectDay={() => {}}
         onEdit={() => {}}
         onRegenerate={() => {}}

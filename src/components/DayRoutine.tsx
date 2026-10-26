@@ -5,15 +5,16 @@ import { ExerciseModal } from './ExerciseModal';
 
 interface Props {
   day: DayPlan;
+  ns?: string;
   done: Record<string, boolean>;
   onToggle: (key: string) => void;
   onBack: () => void;
 }
 
-export function DayRoutine({ day, done, onToggle, onBack }: Props) {
+export function DayRoutine({ day, ns = '', done, onToggle, onBack }: Props) {
   const [openIdx, setOpenIdx] = useState<string | null>(null);
 
-  const key = (block: string, i: number) => `${day.dayIndex}:${block}:${i}`;
+  const key = (block: string, i: number) => `${ns}${day.dayIndex}:${block}:${i}`;
   const open = (block: string, i: number) => setOpenIdx(key(block, i));
 
   const openPlanned = (() => {

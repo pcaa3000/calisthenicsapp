@@ -155,6 +155,8 @@ body {
 .day-card h3 { margin: 0 0 8px; font-size: 1rem; color: var(--khaki); }
 .day-card .meta { color: var(--muted); font-size: 0.85rem; }
 .day-card .count { margin-top: 10px; color: var(--olive-hi); font-size: 0.9rem; }
+.week-nav { display: flex; align-items: center; gap: 12px; margin: -6px 0 14px; }
+.week-nav .meta { color: var(--khaki); font-size: 0.9rem; }
 
 /* ===== Rutina del día ===== */
 .routine-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }

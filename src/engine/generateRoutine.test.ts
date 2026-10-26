@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateRoutine } from './generateRoutine';
+import { generateMonth, generateRoutine } from './generateRoutine';
 import type { DayPlan, Profile } from '../types';
 
 const baseProfile: Profile = {
@@ -121,5 +121,60 @@ describe('generateRoutine', () => {
         ).toBeLessThanOrEqual(tolerance);
       }
     }
+  });
+
+  it('prefers the hardest exercises the level allows', () => {
+    const plan = generateRoutine(
+      { ...baseProfile, level: 'avanzado', daysPerWeek: 5 },
+      5,
+    );
+    const hard = allMain(plan).filter(
+      (pe) => pe.exercise.minLevel !== 'basico',
+    ).length;
+    expect(hard).toBeGreaterThan(allMain(plan).length - hard);
+  });
+
+  it('varies main exercises across the week', () => {
+    const plan = generateRoutine({ ...baseProfile, daysPerWeek: 4 }, 5);
+    const ids = allMain(plan).map((pe) => pe.exercise.id);
+    // Small muscle groups may recycle once their fresh pool runs dry;
+    // repetition must stay the exception, not the rule.
+    expect(new Set(ids).size / ids.length).toBeGreaterThanOrEqual(0.8);
+  });
+
+  it('spaces same-theme days apart', () => {
+    const plan = generateRoutine(
+      { ...baseProfile, daysPerWeek: 5, focuses: ['pecho', 'pierna'] },
+      5,
+    );
+    for (let i = 1; i < plan.days.length; i++) {
+      expect(plan.days[i].theme).not.toBe(plan.days[i - 1].theme);
+    }
+  });
+
+  it('programs a 4-week mesocycle ending in a deload', () => {
+    const month = generateMonth(baseProfile, 42);
+    expect(month.weeks).toHaveLength(4);
+    expect(month.weeks.map((w) => w.week)).toEqual([1, 2, 3, 4]);
+    expect(month.weeks.map((w) => w.phase)).toEqual([
+      'base',
+      'progresion',
+      'intensificacion',
+      'descarga',
+    ]);
+    const dose = (w: (typeof month.weeks)[number]) =>
+      w.days.reduce(
+        (n, d) =>
+          n + d.rounds * d.main.reduce((s, pe) => s + (pe.reps ?? pe.seconds ?? 0), 0),
+        0,
+      );
+    expect(dose(month.weeks[3])).toBeLessThan(dose(month.weeks[2]));
+  });
+
+  it('rotates exercise selection between weeks of the same month', () => {
+    const month = generateMonth(baseProfile, 42);
+    const ids = (w: (typeof month.weeks)[number]) =>
+      w.days.flatMap((d) => d.main.map((pe) => pe.exercise.id)).join(',');
+    expect(ids(month.weeks[0])).not.toBe(ids(month.weeks[1]));
   });
 });

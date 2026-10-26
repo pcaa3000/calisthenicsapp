@@ -58,7 +58,17 @@ export interface DayPlan {
   estimatedMinutes: number;
 }
 
+export type Phase = 'base' | 'progresion' | 'intensificacion' | 'descarga';
+
 export interface WeeklyPlan {
   days: DayPlan[];
+  generatedAt: number;
+  week: number;
+  phase: Phase;
+  phaseLabel: string;
+}
+
+export interface MonthlyPlan {
+  weeks: WeeklyPlan[];
   generatedAt: number;
 }
