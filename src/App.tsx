@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { DayRoutine } from './components/DayRoutine';
+import { MusicBar, MusicSection } from './components/MusicPlayer';
 import { ProfileForm } from './components/ProfileForm';
 import { WeeklyPlanView } from './components/WeeklyPlan';
 import { generateMonth } from './engine/generateRoutine';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { useMusicPlayer } from './hooks/useMusicPlayer';
 import type { MonthlyPlan, Profile } from './types';
 
 export default function App() {
@@ -22,6 +24,7 @@ export default function App() {
   );
   const [editing, setEditing] = useState(false);
   const [dayIndex, setDayIndex] = useState<number | null>(null);
+  const player = useMusicPlayer();
 
   const plan = month
     ? month.weeks[Math.min(weekIndex, month.weeks.length - 1)]
@@ -53,7 +56,7 @@ export default function App() {
   const screenKey = showForm ? 'form' : day ? `day-${day.dayIndex}` : 'plan';
 
   return (
-    <div className="app">
+    <div className={`app${player.index !== null ? ' has-music' : ''}`}>
       <header className="app-header">
         <h1>Calistenia Militar</h1>
         <span className="tag">Rutinas en casa · sin gimnasio</span>
@@ -71,21 +74,25 @@ export default function App() {
             onBack={() => setDayIndex(null)}
           />
         ) : plan ? (
-          <WeeklyPlanView
-            plan={plan}
-            totalWeeks={month?.weeks.length ?? 1}
-            onPrevWeek={() => setWeekIndex((i) => Math.max(0, i - 1))}
-            onNextWeek={() =>
-              setWeekIndex((i) =>
-                Math.min((month?.weeks.length ?? 1) - 1, i + 1),
-              )
-            }
-            onSelectDay={setDayIndex}
-            onEdit={() => setEditing(true)}
-            onRegenerate={regenerate}
-          />
+          <>
+            <WeeklyPlanView
+              plan={plan}
+              totalWeeks={month?.weeks.length ?? 1}
+              onPrevWeek={() => setWeekIndex((i) => Math.max(0, i - 1))}
+              onNextWeek={() =>
+                setWeekIndex((i) =>
+                  Math.min((month?.weeks.length ?? 1) - 1, i + 1),
+                )
+              }
+              onSelectDay={setDayIndex}
+              onEdit={() => setEditing(true)}
+              onRegenerate={regenerate}
+            />
+            <MusicSection player={player} />
+          </>
         ) : null}
       </div>
+      <MusicBar player={player} />
     </div>
   );
 }

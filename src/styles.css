@@ -831,3 +831,77 @@ body {
   .ex-card .fig-wrap { flex-basis: 72px; }
   .app-header h1 { font-size: 1.2rem; }
 }
+
+/* ===== Música libre + reproductor ===== */
+.music-section { margin-top: 28px; }
+.music-list { display: flex; flex-direction: column; gap: 8px; }
+.track-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.track-row:hover { border-color: var(--olive); }
+.track-row.on { border-color: var(--olive); background: var(--card2); }
+.track-ico { color: var(--olive-hi); font-size: 0.8rem; width: 18px; text-align: center; }
+.track-name { flex: 1; min-width: 0; color: var(--text); }
+.track-artist { color: var(--muted); font-size: 0.8rem; }
+.music-credit { color: var(--muted); font-size: 0.75rem; margin-top: 8px; }
+
+.app.has-music { padding-bottom: 110px; }
+.music-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+  z-index: 40;
+}
+.music-bar-inner {
+  max-width: 1020px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+}
+.mb-btn {
+  background: none;
+  border: none;
+  color: var(--khaki);
+  font-size: 1.05rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s, background-color 0.15s;
+}
+.mb-btn:hover { color: var(--olive-hi); }
+.mb-play { color: var(--olive-hi); }
+.mb-title {
+  flex: 1;
+  min-width: 0;
+  color: var(--text);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mb-artist { color: var(--muted); }
+.mb-close { color: var(--muted); }
+.mb-btn:focus-visible { outline: 2px solid var(--olive-hi); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .music-bar { animation: kf-bar-in 0.25s ease-out; }
+  @keyframes kf-bar-in {
+    from { transform: translateY(100%); }
+  }
+}

@@ -13,6 +13,7 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - S6 (usuario, verbatim): "Las animaciones de \"Flexiones inclinadas (silla)\" y \"Flexiones\"; Plancha abdominal y Plancha lateral, se ven iguales" — cada variante de ejercicio debe tener pose/animación distinguible.
 - S7 (usuario, verbatim): "Toma en consideracion este site https://calisteniamilitar.site/" — funnel tipo quiz: una pregunta por pantalla con tarjetas grandes y rangos de edad (18-29/30-39/40-49/50+). Adoptado en ProfileForm como wizard de 8 pasos con auto-avance.
 - S8 (usuario, verbatim): "Puedes revisar y ver si es factible mejorar las animaciones de la app" + "las figuras animadas también se puede mejorar" + "Procede, bajo ODD y TDD" — mejorar animaciones en dos unidades: figuras (ciclos de extremidades interpolados, squash & stretch, sombra de suelo, desfase por tarjeta) y UI (entradas de pantalla/cards, modal con salida, transiciones explícitas, reduced-motion extendido). Sin dependencias nuevas: solo CSS/keyframes.
+- S9 (usuario, verbatim): "Puedes explorar la opcion de colocar un reproductor minimalista, para que acompane la seccion con musica libre para entrenar" + aclaraciones: tracks estilo workout del proveedor incompetech.com (sin Mixkit, sin descargas) — sección "Música libre para entrenar" en la vista de plan + barra de reproductor fija global; streaming CC BY 4.0 de Kevin MacLeod, manifest editable en data/tracks.ts.
 
 ## Tasks
 
@@ -28,6 +29,7 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - T10 [S3, L10] lote de hallazgos de revisión: peso en motor (intensidad + lowImpact ≥120kg), ajuste de tiempo estimado (fitToTarget), 3 ejercicios de espalda + anim 'row', a11y (buttons, focus-visible, Escape, prefers-reduced-motion), keys localStorage :v1, README, quitar sets/vite.svg — inline — done — commit 1eabf73
 - T11 [S8] figuras: keyframes de ciclos alternos interpolados (sin flips 49%), squash & stretch en saltos, ellipse fig-shadow animada, movimiento secundario en lunge/búlgara, desfase --dly por nth-child — inline — done — commit 6baed86
 - T12 [S8] UI: .screen keyed con kf-screen-in, stagger de ex-cards via --i, modal con entrada y salida (estado closing), transiciones explícitas (sin transition:all), prefers-reduced-motion cubre transiciones de UI — inline — done — commit 23f934c
+- T13 [S9] reproductor minimalista: data/tracks.ts (8 pistas incompetech estilo EDM/enérgicas + 1 cooldown), hooks/useMusicPlayer.ts (Audio lazy, next/prev/stop, autoplay siguiente al terminar), components/MusicPlayer.tsx (MusicSection + MusicBar fija), estilos, vitest 36/36 + build + oxlint OK — inline — done
 
 ## Log
 
