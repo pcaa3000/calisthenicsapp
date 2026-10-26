@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { cachedCount, clearAll, downloadAll } from './audio/offlineStore';
 import { DayRoutine } from './components/DayRoutine';
 import { MusicBar, MusicSection } from './components/MusicPlayer';
@@ -42,16 +42,45 @@ export default function App() {
   const [dlPrompt, setDlPrompt] = useState<PromptState>('hidden');
   const [dlProgress, setDlProgress] = useState<[number, number]>([0, 0]);
 
+  const playerRef = useRef(player);
+  const tracksRef = useRef(allTracks);
   useEffect(() => {
-    fetch('/audio/index.json')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j: { tracks?: Track[] } | null) => {
-        if (j?.tracks) {
-          setLocalTracks(j.tracks.map((t) => ({ ...t, local: true })));
-        }
-      })
-      .catch(() => setLocalTracks([]));
+    playerRef.current = player;
+    tracksRef.current = allTracks;
+  });
+
+  const loadLocal = useCallback(async () => {
+    const apply = (j: { tracks?: Track[] } | null) => {
+      const next = (j?.tracks ?? []).map((t) => ({ ...t, local: true }));
+      const merged = [...TRACKS, ...next];
+      const cur = playerRef.current.index;
+      const curUrl = cur !== null ? tracksRef.current[cur]?.url : null;
+      setLocalTracks(next);
+      if (curUrl && cur !== null) {
+        const n = merged.findIndex((t) => t.url === curUrl);
+        if (n === -1) playerRef.current.stop();
+        else if (n !== cur) playerRef.current.reindex(n);
+      }
+    };
+    try {
+      const rescan = await fetch('/api/audio-rescan');
+      apply(rescan.ok ? await rescan.json() : null);
+      if (rescan.ok) return;
+    } catch {
+      // sin endpoint de dev: cae al índice estático
+    }
+    try {
+      const r = await fetch('/audio/index.json');
+      apply(r.ok ? await r.json() : null);
+    } catch {
+      setLocalTracks([]);
+    }
   }, []);
+
+  useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
+    void loadLocal();
+  }, [loadLocal]);
 
   const plan = month
     ? month.weeks[Math.min(weekIndex, month.weeks.length - 1)]
@@ -174,6 +203,7 @@ export default function App() {
               player={player}
               tracks={allTracks}
               downloaded={dlDone}
+              onSync={loadLocal}
             />
           </>
         ) : null}

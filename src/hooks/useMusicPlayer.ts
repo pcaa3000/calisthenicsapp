@@ -11,6 +11,7 @@ export interface MusicPlayer {
   prev: () => void;
   stop: () => void;
   duck: (seconds: number) => void;
+  reindex: (i: number) => void;
 }
 
 export function useMusicPlayer(tracks: Track[] = TRACKS): MusicPlayer {
@@ -89,5 +90,7 @@ export function useMusicPlayer(tracks: Track[] = TRACKS): MusicPlayer {
 
   useEffect(() => () => ref.current?.pause(), []);
 
-  return { index, playing, select, toggle, next, prev, stop, duck };
+  const reindex = (i: number) => setIndex(i);
+
+  return { index, playing, select, toggle, next, prev, stop, duck, reindex };
 }

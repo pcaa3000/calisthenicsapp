@@ -17,7 +17,9 @@ Web app que genera rutinas semanales de calistenia militar para entrenar en casa
 Los mp3 sueltos en `public/audio/` (excluidos de git) se indexan automáticamente
 al correr `npm run dev`/`npm run build` vía `scripts/audio-index.mjs`, que genera
 `public/audio/index.json`. Convención de nombre: `Artista - Título.mp3`
-(sin " - " el artista queda como "Local").
+(sin " - " el artista queda como "Local"). Con el dev server corriendo, el botón
+↻ de la sección de música vuelve a escanear la carpeta (`/api/audio-rescan`)
+y limpia la playlist: quita pistas borradas y agrega las nuevas.
 
 ## Desarrollo
 

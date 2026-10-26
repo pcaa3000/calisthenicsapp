@@ -43,7 +43,8 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - T17 [S13] media query ≤720px para .timer-bar-inner: step-info 100% order -2, time order -1 con margin-right auto, botones compactos — inline — done — commit 8603e17
 - T18 [S14] offline: audio/offlineStore.ts (Cache Storage + blob URLs), MusicPrompt.tsx, dl-pref cm:musicdl:v1, resolveUrl en select del player (token anti-carrera), badge "⤓ offline", paso música en ProfileForm — inline — done — commit 5d3231c
 - T19 [S15] reanudación de descarga + índice de mp3 locales (scripts/audio-index.mjs, fetch /audio/index.json, tracks dinámicos en player/sección/barra, badge "local") — inline — done — commit 7b6d069
-- T20 [S16] ProfileEdit.tsx + profileOptions.ts compartido + ramificación showForm (wizard solo sin perfil) — inline — done
+- T20 [S16] ProfileEdit.tsx + profileOptions.ts compartido + ramificación showForm (wizard solo sin perfil) — inline — done — commit 8d5ae63
+- T21 [S17] botón sync ↻ + endpoint /api/audio-rescan (execFile del script) + reconciliación de track activo por URL — inline — done
 
 ## Log
 

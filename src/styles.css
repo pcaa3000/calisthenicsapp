@@ -1016,3 +1016,7 @@ body {
 }
 
 .edit-section { margin-top: 18px; }
+
+.music-head { display: flex; align-items: center; justify-content: space-between; }
+.music-head .block-label { margin-bottom: 0; }
+.music-head + .music-list { margin-top: 10px; }

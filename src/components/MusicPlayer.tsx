@@ -5,12 +5,30 @@ interface Props {
   player: MusicPlayer;
   tracks: Track[];
   downloaded?: boolean;
+  onSync?: () => void;
 }
 
-export function MusicSection({ player, tracks, downloaded = false }: Props) {
+export function MusicSection({
+  player,
+  tracks,
+  downloaded = false,
+  onSync,
+}: Props) {
   return (
     <section className="music-section">
-      <p className="block-label">Música libre para entrenar</p>
+      <div className="music-head">
+        <p className="block-label">Música libre para entrenar</p>
+        {onSync && (
+          <button
+            className="mb-btn"
+            onClick={onSync}
+            aria-label="Sincronizar mp3 locales"
+            title="Sincronizar mp3 de public/audio"
+          >
+            ↻
+          </button>
+        )}
+      </div>
       <div className="music-list">
         {tracks.map((t, i) => {
           const active = player.index === i;
@@ -48,6 +66,7 @@ export function MusicSection({ player, tracks, downloaded = false }: Props) {
 export function MusicBar({ player, tracks }: Props) {
   if (player.index === null) return null;
   const t = tracks[player.index];
+  if (!t) return null;
   return (
     <div className="music-bar" role="region" aria-label="Reproductor">
       <div className="music-bar-inner">
