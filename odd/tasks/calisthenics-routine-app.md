@@ -16,6 +16,7 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - S9 (usuario, verbatim): "Puedes explorar la opcion de colocar un reproductor minimalista, para que acompane la seccion con musica libre para entrenar" + aclaraciones: tracks estilo workout del proveedor incompetech.com (sin Mixkit, sin descargas) — sección "Música libre para entrenar" en la vista de plan + barra de reproductor fija global; streaming CC BY 4.0 de Kevin MacLeod, manifest editable en data/tracks.ts.
 - S10 (usuario, verbatim): "Agrega la opcion de activar un temporizador, que este de acuerdo con el tiempo de la rutina indicada, el tiempo del temporizador puede ser editable. El temporizador como el reproductor deben permancer visibles, mientras se va navegando por la rutina de ejercicios." — timer con preset = estimatedMinutes del día abierto, minutos editables (input 1-240, bloqueado en marcha), beep WebAudio al finalizar; dock fijo inferior compartido con MusicBar para persistir entre pantallas.
 - S11 (usuario, verbatim): "El timer deber deberia sonar por la ejecucion de cada ejercio, es decir si me toca un ejercicio de 35s, sonar cuando cumpla este tiempo para que me indique pare, y pueda continuar con el siguiente paso que puede ser un nuevo ejercio o descanso." + clarificación: "Automatico por defecto, pero con la opcion de cambiar a semi" — timer guiado por pasos (buildSteps: warmup → main×rounds con descansos → cooldown), beep al cumplir cada paso, modo Auto (reps usan estimación 2.5s/rep) / Semi (pasos por reps son compuertas manuales que muestran la dosis hasta continuar).
+- S12 (usuario, verbatim): "Cuando suena el beep este puede durar 1 a 3s y bajar el volumen del reproductor, si se esta ejecutando, por ese periodo" — beep extendido a ~2s (pulsos 880Hz cada 0.5s, AudioContext cerrado al finalizar) + player.duck() baja volumen a 18% durante el beep y restaura.
 
 ## Tasks
 
@@ -33,7 +34,8 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - T12 [S8] UI: .screen keyed con kf-screen-in, stagger de ex-cards via --i, modal con entrada y salida (estado closing), transiciones explícitas (sin transition:all), prefers-reduced-motion cubre transiciones de UI — inline — done — commit 23f934c
 - T13 [S9] reproductor minimalista: data/tracks.ts (8 pistas incompetech estilo EDM/enérgicas + 1 cooldown), hooks/useMusicPlayer.ts (Audio lazy, next/prev/stop, autoplay siguiente al terminar), components/MusicPlayer.tsx (MusicSection + MusicBar fija), estilos, vitest 36/36 + build + oxlint OK — inline — done — commit aaa3642
 - T14 [S10] temporizador: hooks/useWorkoutTimer.ts (preset sincronizado via ajuste de estado en render, interval + remainingRef, beep()), components/TimerBar.tsx, .bottom-dock compartido, botón "⏱ Timer" en header — inline — done — commit 67a6c63
-- T15 [S11] timer por pasos: TimerStep + buildSteps(day), modes auto/semi con chips, beep por paso, skip/reset/close, modo libre (countdown editable) cuando no hay día abierto — inline — done
+- T15 [S11] timer por pasos: TimerStep + buildSteps(day), modes auto/semi con chips, beep por paso, skip/reset/close, modo libre (countdown editable) cuando no hay día abierto — inline — done — commit dd8dee1
+- T16 [S12] beep(seconds) parametrizado + MusicPlayer.duck() con restore vía savedVol/duckTimer, wiring onAlert en App — inline — done
 
 ## Log
 

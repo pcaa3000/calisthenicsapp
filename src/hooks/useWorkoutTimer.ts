@@ -76,7 +76,12 @@ export interface WorkoutTimer {
   setMinutes: (m: number) => void;
 }
 
-export function useWorkoutTimer(presetMinutes: number): WorkoutTimer {
+export const BEEP_SECONDS = 2;
+
+export function useWorkoutTimer(
+  presetMinutes: number,
+  onAlert?: () => void,
+): WorkoutTimer {
   const [active, setActive] = useState(false);
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -129,7 +134,8 @@ export function useWorkoutTimer(presetMinutes: number): WorkoutTimer {
       remainingRef.current = v;
       setRemaining(v);
       if (v !== 0) return;
-      beep();
+      beep(BEEP_SECONDS);
+      onAlert?.();
       if (!stepsRef.current) {
         setRunning(false);
         setFinished(true);

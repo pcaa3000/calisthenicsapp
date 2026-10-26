@@ -9,6 +9,7 @@ export interface MusicPlayer {
   next: () => void;
   prev: () => void;
   stop: () => void;
+  duck: (seconds: number) => void;
 }
 
 export function useMusicPlayer(): MusicPlayer {
@@ -50,6 +51,21 @@ export function useMusicPlayer(): MusicPlayer {
     setIndex(null);
   };
 
+  const savedVol = useRef<number | null>(null);
+  const duckTimer = useRef<number | null>(null);
+  const duck = (seconds: number) => {
+    const a = ref.current;
+    if (!a || a.paused) return;
+    if (duckTimer.current !== null) clearTimeout(duckTimer.current);
+    if (savedVol.current === null) savedVol.current = a.volume;
+    a.volume = Math.min(savedVol.current, 0.18);
+    duckTimer.current = window.setTimeout(() => {
+      a.volume = savedVol.current ?? 1;
+      savedVol.current = null;
+      duckTimer.current = null;
+    }, seconds * 1000);
+  };
+
   const nextRef = useRef(next);
   useEffect(() => {
     nextRef.current = next;
@@ -64,5 +80,5 @@ export function useMusicPlayer(): MusicPlayer {
 
   useEffect(() => () => ref.current?.pause(), []);
 
-  return { index, playing, select, toggle, next, prev, stop };
+  return { index, playing, select, toggle, next, prev, stop, duck };
 }

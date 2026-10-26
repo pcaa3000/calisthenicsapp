@@ -7,7 +7,7 @@ import { WeeklyPlanView } from './components/WeeklyPlan';
 import { generateMonth } from './engine/generateRoutine';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useMusicPlayer } from './hooks/useMusicPlayer';
-import { useWorkoutTimer } from './hooks/useWorkoutTimer';
+import { BEEP_SECONDS, useWorkoutTimer } from './hooks/useWorkoutTimer';
 import type { MonthlyPlan, Profile } from './types';
 
 export default function App() {
@@ -32,7 +32,9 @@ export default function App() {
     ? month.weeks[Math.min(weekIndex, month.weeks.length - 1)]
     : null;
   const day = plan?.days.find((d) => d.dayIndex === dayIndex) ?? null;
-  const timer = useWorkoutTimer(day?.estimatedMinutes ?? 30);
+  const timer = useWorkoutTimer(day?.estimatedMinutes ?? 30, () =>
+    player.duck(BEEP_SECONDS + 0.5),
+  );
 
   const handleSubmit = (p: Profile) => {
     setProfile(p);
