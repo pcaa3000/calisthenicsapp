@@ -3,6 +3,7 @@ export interface Track {
   artist: string;
   url: string;
   dl?: boolean;
+  local?: boolean;
 }
 
 const KM = 'https://incompetech.com/music/royalty-free/mp3-royaltyfree';

@@ -1,17 +1,18 @@
-import { TRACKS } from '../data/tracks';
+import type { Track } from '../data/tracks';
 import type { MusicPlayer } from '../hooks/useMusicPlayer';
 
 interface Props {
   player: MusicPlayer;
+  tracks: Track[];
   downloaded?: boolean;
 }
 
-export function MusicSection({ player, downloaded = false }: Props) {
+export function MusicSection({ player, tracks, downloaded = false }: Props) {
   return (
     <section className="music-section">
       <p className="block-label">Música libre para entrenar</p>
       <div className="music-list">
-        {TRACKS.map((t, i) => {
+        {tracks.map((t, i) => {
           const active = player.index === i;
           return (
             <button
@@ -25,7 +26,12 @@ export function MusicSection({ player, downloaded = false }: Props) {
                 {active && player.playing ? '❚❚' : '▶'}
               </span>
               <span className="track-name">{t.title}</span>
-              {t.dl && downloaded && <span className="dl-badge">⤓ offline</span>}
+              {t.local ? (
+                <span className="dl-badge">local</span>
+              ) : (
+                t.dl &&
+                downloaded && <span className="dl-badge">⤓ offline</span>
+              )}
               <span className="track-artist">{t.artist}</span>
             </button>
           );
@@ -39,9 +45,9 @@ export function MusicSection({ player, downloaded = false }: Props) {
   );
 }
 
-export function MusicBar({ player }: Props) {
+export function MusicBar({ player, tracks }: Props) {
   if (player.index === null) return null;
-  const t = TRACKS[player.index];
+  const t = tracks[player.index];
   return (
     <div className="music-bar" role="region" aria-label="Reproductor">
       <div className="music-bar-inner">

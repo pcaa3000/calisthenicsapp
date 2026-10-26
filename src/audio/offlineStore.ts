@@ -21,14 +21,18 @@ export async function downloadAll(
   let done = 0;
   let ok = 0;
   for (const u of urls) {
-    try {
-      const res = await fetch(u);
-      if (res.ok) {
-        await cache.put(u, res);
-        ok++;
+    if (await cache.match(u)) {
+      ok++;
+    } else {
+      try {
+        const res = await fetch(u);
+        if (res.ok) {
+          await cache.put(u, res);
+          ok++;
+        }
+      } catch {
+        continue;
       }
-    } catch {
-      continue;
     }
     onProgress?.(++done, urls.length);
   }

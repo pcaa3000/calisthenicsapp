@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { resolveUrl } from '../audio/offlineStore';
-import { TRACKS } from '../data/tracks';
+import { TRACKS, type Track } from '../data/tracks';
 
 export interface MusicPlayer {
   index: number | null;
@@ -13,7 +13,7 @@ export interface MusicPlayer {
   duck: (seconds: number) => void;
 }
 
-export function useMusicPlayer(): MusicPlayer {
+export function useMusicPlayer(tracks: Track[] = TRACKS): MusicPlayer {
   const ref = useRef<HTMLAudioElement | null>(null);
   const [index, setIndex] = useState<number | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -22,7 +22,7 @@ export function useMusicPlayer(): MusicPlayer {
 
   const selToken = useRef(0);
   const select = (i: number) => {
-    const t = TRACKS[i];
+    const t = tracks[i];
     const my = ++selToken.current;
     void (async () => {
       const src = t.dl ? await resolveUrl(t.url) : t.url;
@@ -50,8 +50,9 @@ export function useMusicPlayer(): MusicPlayer {
     }
   };
 
-  const next = () => select(((index ?? -1) + 1) % TRACKS.length);
-  const prev = () => select(((index ?? 1) - 1 + TRACKS.length) % TRACKS.length);
+  const next = () => select(((index ?? -1) + 1) % tracks.length);
+  const prev = () =>
+    select(((index ?? 1) - 1 + tracks.length) % tracks.length);
 
   const stop = () => {
     ref.current?.pause();

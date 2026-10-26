@@ -19,6 +19,7 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - S12 (usuario, verbatim): "Cuando suena el beep este puede durar 1 a 3s y bajar el volumen del reproductor, si se esta ejecutando, por ese periodo" — beep extendido a ~2s (pulsos 880Hz cada 0.5s, AudioContext cerrado al finalizar) + player.duck() baja volumen a 18% durante el beep y restaura.
 - S13 (usuario, verbatim + captura): "verificar los titulos responsivos del timer no se ven bien en formato movil" — en ≤720px el step-info ocupaba ancho mínimo y el meta se partía; fix CSS con flex-wrap + order: fila 1 nombre completo, fila 2 tiempo + chips + controles compactos.
 - S14 (usuario, verbatim): "sobre los tracks offline, considera sites para descarga de mp3s libres, con temas de gym, workout, motivation en electronica y/o rock. Estos archivo mp3 se deben excluir de git, pero se debe consider un indice para su descarga, cuando se clone el repositorio. El usuario debera elegir si desea descargar estos recursos o no, al iniciar la app, siempre y cuando aun no se haya descargado. Esta opcion puede ser cambiada desde su perfil u omitir explicitamente la descarga al inicio" + "considerar tambien electronica" — 9 pistas Mixkit (5 EDM + 4 rock, dl:true en tracks.ts) descargables a Cache Storage (cm-audio-v1); CORS verificado: mixkit assets OK (*), incompetech sin CORS → solo stream. Prompt modal al inicio si pref 'ask'/'yes' y faltan pistas; 'Omitir' persiste 'no' en cm:musicdl:v1; paso 9 del wizard de perfil (musicDownload) permite cambiarla; 'no' limpia el caché. MP3s excluidos vía .gitignore (*.mp3, public/audio/).
+- S15 (usuario, verbatim): "Verifica si existe la posibilidad de continuar descarga y como son indexados los archivos locales, mp3, sueltos en public/audio/ en el reproductor" — downloadAll ahora salta URLs ya cacheadas (reanuda parciales); scripts/audio-index.mjs (predev/prebuild) escanea public/audio/*.mp3 → index.json con convención "Artista - Título.mp3"; App lo fetcha y fusiona como tracks local:true tras TRACKS; useMusicPlayer recibe la lista por parámetro.
 
 ## Tasks
 
@@ -39,7 +40,8 @@ Branch: feature/calisthenics-routine-app | Entrega: work-unit commits convencion
 - T15 [S11] timer por pasos: TimerStep + buildSteps(day), modes auto/semi con chips, beep por paso, skip/reset/close, modo libre (countdown editable) cuando no hay día abierto — inline — done — commit dd8dee1
 - T16 [S12] beep(seconds) parametrizado + MusicPlayer.duck() con restore vía savedVol/duckTimer, wiring onAlert en App — inline — done — commit 10c676f
 - T17 [S13] media query ≤720px para .timer-bar-inner: step-info 100% order -2, time order -1 con margin-right auto, botones compactos — inline — done — commit 8603e17
-- T18 [S14] offline: audio/offlineStore.ts (Cache Storage + blob URLs), MusicPrompt.tsx, dl-pref cm:musicdl:v1, resolveUrl en select del player (token anti-carrera), badge "⤓ offline", paso música en ProfileForm — inline — done
+- T18 [S14] offline: audio/offlineStore.ts (Cache Storage + blob URLs), MusicPrompt.tsx, dl-pref cm:musicdl:v1, resolveUrl en select del player (token anti-carrera), badge "⤓ offline", paso música en ProfileForm — inline — done — commit 5d3231c
+- T19 [S15] reanudación de descarga + índice de mp3 locales (scripts/audio-index.mjs, fetch /audio/index.json, tracks dinámicos en player/sección/barra, badge "local") — inline — done
 
 ## Log
 

@@ -6,7 +6,7 @@ import { MusicPrompt, type PromptState } from './components/MusicPrompt';
 import { ProfileForm } from './components/ProfileForm';
 import { TimerBar } from './components/TimerBar';
 import { WeeklyPlanView } from './components/WeeklyPlan';
-import { OFFLINE_URLS } from './data/tracks';
+import { OFFLINE_URLS, TRACKS, type Track } from './data/tracks';
 import { generateMonth } from './engine/generateRoutine';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useMusicPlayer } from './hooks/useMusicPlayer';
@@ -29,7 +29,9 @@ export default function App() {
   );
   const [editing, setEditing] = useState(false);
   const [dayIndex, setDayIndex] = useState<number | null>(null);
-  const player = useMusicPlayer();
+  const [localTracks, setLocalTracks] = useState<Track[]>([]);
+  const allTracks = [...TRACKS, ...localTracks];
+  const player = useMusicPlayer(allTracks);
 
   const [dlPref, setDlPref] = useLocalStorage<'ask' | 'yes' | 'no'>(
     'cm:musicdl:v1',
@@ -38,6 +40,17 @@ export default function App() {
   const [dlDone, setDlDone] = useState(false);
   const [dlPrompt, setDlPrompt] = useState<PromptState>('hidden');
   const [dlProgress, setDlProgress] = useState<[number, number]>([0, 0]);
+
+  useEffect(() => {
+    fetch('/audio/index.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: { tracks?: Track[] } | null) => {
+        if (j?.tracks) {
+          setLocalTracks(j.tracks.map((t) => ({ ...t, local: true })));
+        }
+      })
+      .catch(() => setLocalTracks([]));
+  }, []);
 
   const plan = month
     ? month.weeks[Math.min(weekIndex, month.weeks.length - 1)]
@@ -148,7 +161,11 @@ export default function App() {
               onEdit={() => setEditing(true)}
               onRegenerate={regenerate}
             />
-            <MusicSection player={player} downloaded={dlDone} />
+            <MusicSection
+              player={player}
+              tracks={allTracks}
+              downloaded={dlDone}
+            />
           </>
         ) : null}
       </div>
@@ -166,7 +183,7 @@ export default function App() {
       {dockRows > 0 && (
         <div className="bottom-dock">
           <TimerBar timer={timer} />
-          <MusicBar player={player} />
+          <MusicBar player={player} tracks={allTracks} />
         </div>
       )}
     </div>

@@ -9,6 +9,15 @@ Web app que genera rutinas semanales de calistenia militar para entrenar en casa
 - 37 ejercicios con figuras SVG animadas propias y enlace a video demostrativo.
 - Personalización: objetivo (bajar peso / ganar músculo / atlético), nivel (básico / intermedio / avanzado), enfoques (pecho, pierna, brazo, core), bajo impacto automático para obeso, 50+ años o 120+ kg.
 - Persistencia en `localStorage` (perfil, plan y ejercicios completados).
+- Reproductor minimalista: streaming (incompetech, CC BY) + pistas Mixkit descargables a Cache Storage para uso offline (opt-in desde el wizard o el modal de inicio).
+- Timer guiado por pasos de la rutina (auto/semi) con beep y duck del volumen de la música.
+
+## Música local
+
+Los mp3 sueltos en `public/audio/` (excluidos de git) se indexan automáticamente
+al correr `npm run dev`/`npm run build` vía `scripts/audio-index.mjs`, que genera
+`public/audio/index.json`. Convención de nombre: `Artista - Título.mp3`
+(sin " - " el artista queda como "Local").
 
 ## Desarrollo
 
