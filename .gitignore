@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .atl/
+
+# Descargables (música, no versionar)
+public/audio/
+*.mp3

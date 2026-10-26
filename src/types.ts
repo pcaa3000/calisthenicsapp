@@ -19,6 +19,7 @@ export interface Profile {
   goal: Goal;
   focuses: Focus[];
   level: Level;
+  musicDownload?: boolean;
 }
 
 export type Impact = 'low' | 'high';

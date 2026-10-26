@@ -35,7 +35,7 @@ const FOCUSES: { value: Focus; label: string }[] = [
 ];
 
 const TIME_OPTIONS = [15, 20, 30, 45, 60];
-const STEP_COUNT = 8;
+const STEP_COUNT = 9;
 
 interface Props {
   initial: Profile | null;
@@ -55,6 +55,9 @@ export function ProfileForm({ initial, onSubmit }: Props) {
   const [minutesPerSession, setMinutes] = useState(initial?.minutesPerSession ?? 0);
   const [goal, setGoal] = useState<Goal | null>(initial?.goal ?? null);
   const [focuses, setFocuses] = useState<Focus[]>(initial?.focuses ?? []);
+  const [music, setMusic] = useState<boolean | null>(
+    initial?.musicDownload ?? null,
+  );
   const [error, setError] = useState('');
 
   const advance = () => {
@@ -72,7 +75,7 @@ export function ProfileForm({ initial, onSubmit }: Props) {
       prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f],
     );
 
-  const submit = () => {
+  const submit = (musicDownload: boolean) => {
     if (focuses.length === 0)
       return setError('Elige al menos un enfoque muscular.');
     onSubmit({
@@ -84,7 +87,20 @@ export function ProfileForm({ initial, onSubmit }: Props) {
       goal: goal!,
       focuses,
       level: level!,
+      musicDownload,
     });
+  };
+
+  const focusNext = () => {
+    if (focuses.length === 0)
+      return setError('Elige al menos un enfoque muscular.');
+    advance();
+  };
+
+  const finish = (v: boolean) => {
+    setMusic(v);
+    setError('');
+    submit(v);
   };
 
   const single = (pick: () => void) => () => {
@@ -213,7 +229,28 @@ export function ProfileForm({ initial, onSubmit }: Props) {
             ))}
           </div>
           <div className="btn-row">
-            <button className="btn" onClick={submit}>Generar rutina</button>
+            <button className="btn" onClick={focusNext}>Siguiente</button>
+          </div>
+        </Step>
+      )}
+
+      {step === 8 && (
+        <Step q="¿Descargar música para entrenar sin conexión?">
+          <div className="opt-grid">
+            <button
+              className={`opt-card ${music === true ? 'on' : ''}`}
+              onClick={() => finish(true)}
+            >
+              <strong>Sí</strong>
+              <span>Pistas libres de electrónica y rock (~34 MB)</span>
+            </button>
+            <button
+              className={`opt-card ${music === false ? 'on' : ''}`}
+              onClick={() => finish(false)}
+            >
+              <strong>No</strong>
+              <span>Solo streaming con conexión</span>
+            </button>
           </div>
         </Step>
       )}

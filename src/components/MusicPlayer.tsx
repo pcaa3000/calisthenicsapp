@@ -3,9 +3,10 @@ import type { MusicPlayer } from '../hooks/useMusicPlayer';
 
 interface Props {
   player: MusicPlayer;
+  downloaded?: boolean;
 }
 
-export function MusicSection({ player }: Props) {
+export function MusicSection({ player, downloaded = false }: Props) {
   return (
     <section className="music-section">
       <p className="block-label">Música libre para entrenar</p>
@@ -24,13 +25,15 @@ export function MusicSection({ player }: Props) {
                 {active && player.playing ? '❚❚' : '▶'}
               </span>
               <span className="track-name">{t.title}</span>
+              {t.dl && downloaded && <span className="dl-badge">⤓ offline</span>}
               <span className="track-artist">{t.artist}</span>
             </button>
           );
         })}
       </div>
       <p className="music-credit">
-        Kevin MacLeod (incompetech.com) · Licencia CC BY 4.0
+        Kevin MacLeod (incompetech.com) · CC BY 4.0 · Mixkit (mixkit.co) ·
+        Licencia gratuita
       </p>
     </section>
   );

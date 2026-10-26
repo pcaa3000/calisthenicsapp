@@ -991,3 +991,26 @@ body {
   .timer-time { order: -1; min-width: 0; margin-right: auto; font-size: 1.1rem; }
   .timer-bar-inner .mb-btn { padding: 5px 7px; font-size: 0.95rem; }
 }
+
+/* ===== Descarga offline ===== */
+.dl-badge {
+  font-size: 0.68rem;
+  color: var(--olive-hi);
+  border: 1px solid var(--olive);
+  border-radius: 10px;
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+.dl-progress {
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 12px 0 4px;
+}
+.dl-progress span {
+  display: block;
+  height: 100%;
+  background: var(--olive);
+  transition: width 0.3s;
+}

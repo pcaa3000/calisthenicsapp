@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { resolveUrl } from '../audio/offlineStore';
 import { TRACKS } from '../data/tracks';
 
 export interface MusicPlayer {
@@ -19,12 +20,19 @@ export function useMusicPlayer(): MusicPlayer {
 
   const audio = () => (ref.current ??= new Audio());
 
+  const selToken = useRef(0);
   const select = (i: number) => {
-    const a = audio();
-    a.src = TRACKS[i].url;
-    void a.play().catch(() => setPlaying(false));
-    setIndex(i);
-    setPlaying(true);
+    const t = TRACKS[i];
+    const my = ++selToken.current;
+    void (async () => {
+      const src = t.dl ? await resolveUrl(t.url) : t.url;
+      if (my !== selToken.current) return;
+      const a = audio();
+      a.src = src;
+      void a.play().catch(() => setPlaying(false));
+      setIndex(i);
+      setPlaying(true);
+    })();
   };
 
   const toggle = () => {
