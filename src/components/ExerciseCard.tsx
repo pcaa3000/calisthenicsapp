@@ -1,9 +1,7 @@
 import type { CSSProperties } from 'react';
 import { Figure } from '../figures/Figure';
 import type { PlannedExercise } from '../types';
-
-export const videoUrl = (query: string) =>
-  `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+import { videoUrl } from '../utils';
 
 interface Props {
   planned: PlannedExercise;

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Figure } from '../figures/Figure';
 import type { PlannedExercise } from '../types';
-import { videoUrl } from './ExerciseCard';
+import { videoUrl } from '../utils';
 
 interface Props {
   planned: PlannedExercise;
