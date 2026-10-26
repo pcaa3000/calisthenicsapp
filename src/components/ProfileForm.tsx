@@ -1,4 +1,11 @@
 import { useState, type ReactNode } from 'react';
+import {
+  BODY_TYPES,
+  FOCUSES,
+  GOALS,
+  LEVELS,
+  TIME_OPTIONS,
+} from '../data/profileOptions';
 import type { BodyType, Focus, Goal, Level, Profile } from '../types';
 
 const AGE_RANGES = [
@@ -7,34 +14,6 @@ const AGE_RANGES = [
   { label: '40 - 49', age: 45 },
   { label: '50+', age: 58 },
 ];
-
-const BODY_TYPES: { value: BodyType; label: string; desc: string }[] = [
-  { value: 'delgado', label: 'Delgado', desc: 'Contextura ligera, cuesta subir de peso' },
-  { value: 'medio', label: 'Medio', desc: 'Contextura atlética promedio' },
-  { value: 'grueso', label: 'Grueso', desc: 'Contextura ancha, masa sólida' },
-  { value: 'obeso', label: 'Obeso', desc: 'Sobrepeso alto, prioridad bajar de peso' },
-];
-
-const LEVELS: { value: Level; label: string; desc: string }[] = [
-  { value: 'basico', label: 'Básico', desc: 'Sedentario o empezando de cero' },
-  { value: 'intermedio', label: 'Intermedio', desc: 'Entreno ocasionalmente' },
-  { value: 'avanzado', label: 'Avanzado', desc: 'Entreno con regularidad' },
-];
-
-const GOALS: { value: Goal; label: string; desc: string }[] = [
-  { value: 'bajar_peso', label: 'Bajar de peso', desc: 'Quemar grasa con alta intensidad' },
-  { value: 'ganar_musculo', label: 'Ganar músculo', desc: 'Fuerza y volumen muscular' },
-  { value: 'atletico', label: 'Atlético', desc: 'Resistencia, potencia y agilidad' },
-];
-
-const FOCUSES: { value: Focus; label: string }[] = [
-  { value: 'pecho', label: 'Pecho' },
-  { value: 'pierna', label: 'Pierna' },
-  { value: 'brazo', label: 'Brazo' },
-  { value: 'core', label: 'Core (abdomen)' },
-];
-
-const TIME_OPTIONS = [15, 20, 30, 45, 60];
 const STEP_COUNT = 9;
 
 interface Props {

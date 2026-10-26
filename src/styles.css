@@ -1014,3 +1014,5 @@ body {
   background: var(--olive);
   transition: width 0.3s;
 }
+
+.edit-section { margin-top: 18px; }

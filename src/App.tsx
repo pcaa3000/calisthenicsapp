@@ -3,6 +3,7 @@ import { cachedCount, clearAll, downloadAll } from './audio/offlineStore';
 import { DayRoutine } from './components/DayRoutine';
 import { MusicBar, MusicSection } from './components/MusicPlayer';
 import { MusicPrompt, type PromptState } from './components/MusicPrompt';
+import { ProfileEdit } from './components/ProfileEdit';
 import { ProfileForm } from './components/ProfileForm';
 import { TimerBar } from './components/TimerBar';
 import { WeeklyPlanView } from './components/WeeklyPlan';
@@ -137,7 +138,15 @@ export default function App() {
 
       <div className="screen" key={screenKey}>
         {showForm ? (
-          <ProfileForm initial={profile} onSubmit={handleSubmit} />
+          profile && editing ? (
+            <ProfileEdit
+              initial={profile}
+              onSubmit={handleSubmit}
+              onCancel={() => setEditing(false)}
+            />
+          ) : (
+            <ProfileForm initial={profile} onSubmit={handleSubmit} />
+          )
         ) : day ? (
           <DayRoutine
             day={day}
