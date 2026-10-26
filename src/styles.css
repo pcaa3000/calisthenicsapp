@@ -856,15 +856,20 @@ body {
 .track-artist { color: var(--muted); font-size: 0.8rem; }
 .music-credit { color: var(--muted); font-size: 0.75rem; margin-top: 8px; }
 
-.app.has-music { padding-bottom: 110px; }
-.music-bar {
+.app.pad-dock-1 { padding-bottom: 110px; }
+.app.pad-dock-2 { padding-bottom: 170px; }
+.bottom-dock {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+}
+.music-bar {
   background: var(--bg2);
   border-top: 1px solid var(--line);
-  z-index: 40;
 }
 .music-bar-inner {
   max-width: 1020px;
@@ -903,5 +908,48 @@ body {
   .music-bar { animation: kf-bar-in 0.25s ease-out; }
   @keyframes kf-bar-in {
     from { transform: translateY(100%); }
+  }
+}
+
+/* ===== Temporizador ===== */
+.app-timer-btn { margin-left: auto; }
+.timer-bar {
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+}
+.timer-bar-inner {
+  max-width: 1020px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+}
+.timer-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--khaki);
+  min-width: 70px;
+}
+.timer-bar.finished .timer-time { color: var(--accent); }
+.timer-min { display: flex; align-items: center; gap: 6px; }
+.timer-min .meta { color: var(--muted); font-size: 0.8rem; }
+.timer-min-input {
+  width: 64px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 6px 8px;
+  font-size: 0.95rem;
+}
+.timer-min-input:focus { outline: 2px solid var(--olive); }
+.timer-min-input:disabled { opacity: 0.5; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .timer-bar.finished .timer-time { animation: kf-blink 1s step-start infinite; }
+  @keyframes kf-blink {
+    50% { opacity: 0.35; }
   }
 }

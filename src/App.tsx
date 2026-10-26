@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { DayRoutine } from './components/DayRoutine';
 import { MusicBar, MusicSection } from './components/MusicPlayer';
 import { ProfileForm } from './components/ProfileForm';
+import { TimerBar } from './components/TimerBar';
 import { WeeklyPlanView } from './components/WeeklyPlan';
 import { generateMonth } from './engine/generateRoutine';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useMusicPlayer } from './hooks/useMusicPlayer';
+import { useWorkoutTimer } from './hooks/useWorkoutTimer';
 import type { MonthlyPlan, Profile } from './types';
 
 export default function App() {
@@ -29,6 +31,8 @@ export default function App() {
   const plan = month
     ? month.weeks[Math.min(weekIndex, month.weeks.length - 1)]
     : null;
+  const day = plan?.days.find((d) => d.dayIndex === dayIndex) ?? null;
+  const timer = useWorkoutTimer(day?.estimatedMinutes ?? 30);
 
   const handleSubmit = (p: Profile) => {
     setProfile(p);
@@ -52,14 +56,22 @@ export default function App() {
     setDone((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const showForm = !profile || editing;
-  const day = plan?.days.find((d) => d.dayIndex === dayIndex) ?? null;
   const screenKey = showForm ? 'form' : day ? `day-${day.dayIndex}` : 'plan';
+  const dockRows = (player.index !== null ? 1 : 0) + (timer.active ? 1 : 0);
 
   return (
-    <div className={`app${player.index !== null ? ' has-music' : ''}`}>
+    <div className={`app${dockRows ? ` pad-dock-${dockRows}` : ''}`}>
       <header className="app-header">
         <h1>Calistenia Militar</h1>
         <span className="tag">Rutinas en casa · sin gimnasio</span>
+        {!showForm && !timer.active && (
+          <button
+            className="btn ghost small app-timer-btn"
+            onClick={timer.activate}
+          >
+            ⏱ Timer
+          </button>
+        )}
       </header>
 
       <div className="screen" key={screenKey}>
@@ -92,7 +104,12 @@ export default function App() {
           </>
         ) : null}
       </div>
-      <MusicBar player={player} />
+      {dockRows > 0 && (
+        <div className="bottom-dock">
+          <TimerBar timer={timer} />
+          <MusicBar player={player} />
+        </div>
+      )}
     </div>
   );
 }
